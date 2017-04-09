@@ -4,7 +4,7 @@
 	        <div class="c-span4">
 	            <a href="####" class="aw-weather-pollution-area">
 	                <p class="aw-weather-pollution-title">实时空气质量</p>
-	                <p class="aw-weather-pollution-color"  :class="colorLv"><span class="c-gap-right-small aw-weather-poNum">{{AQI}}</span> <span>{{AQIDecLv}}</span></p>
+	                <p class="aw-weather-pollution-color" transition="gradient" :class="colorLv"><span class="c-gap-right-small aw-weather-poNum aw-list-item">{{AQI}}</span><span>{{AQIDecLv}}</span></p>
 	            </a>
 	        </div>
 	        <div class="c-span8">
@@ -96,11 +96,24 @@ export default {
 		    line-height: 21px;
 		    font-size: 12px;
 		    width: 83px;
+	    	-webkit-transition: all 1.2s linear; /* For Safari 3.1 to 6.0 */
+    		transition: all 1.2s linear;
+    		text-shadow: 1px 1px 1px rgba(0,0,0,.6);
 		    .aw-weather-poNum{
 		    	font-size: 13px;
 		    }
-		    
+		    .bounce-transition {
+			 
+			}
+			.bounce-enter-active, .bounce-leave-active {
+			  transition: all 1s;
+			}
+			.bounce-enter, .bounce-leave-active {
+			  opacity: 0;
+			  transform: translateY(30px);
+			}
 	    }
+
 	    .lv1{background-color: #50B847;}
 	    .lv2{background-color: #F3EC18;}
 	    .lv3{background-color: #F87F24;}
