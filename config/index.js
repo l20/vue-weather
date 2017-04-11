@@ -28,7 +28,9 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/shopping/v2/restaurant/category': 'https://mainsite-restapi.ele.me/v1/cities'
+        '/location': 'https://api.map.baidu.com',
+        '/weather_mini' : 'http://wthrcdn.etouch.cn',
+        '/WeatherApi' : 'http://wthrcdn.etouch.cn'
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

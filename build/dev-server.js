@@ -11,6 +11,31 @@ var express = require('express')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
+var app = express()
+
+// --------------------路由开始
+var appData = require('../static/city.json');
+var cityInfo = require('../static/citydata.json');
+
+var apiRoutes = express.Router();
+
+apiRoutes.get('/city', function (req, res) {
+  res.json({
+    errno: 0,
+    data: appData
+  });
+});
+
+apiRoutes.get('/citycode', function (req, res) {
+  res.json({
+    errno: 0,
+    data: cityInfo
+  });
+});
+
+app.use('/api', apiRoutes);
+
+// --------------------路由代码结束
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -20,7 +45,6 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 // https://github.com/chimurai/http-proxy-middleware
 var proxyTable = config.dev.proxyTable
 
-var app = express()
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
@@ -38,6 +62,8 @@ compiler.plugin('compilation', function (compilation) {
     cb()
   })
 })
+  // app.use(proxyMiddleware('/v1', {target: 'https://mainsite-restapi.ele.me', changeOrigin: true}))
+  // app.use(proxyMiddleware('/location', {target: 'https://api.map.baidu.com', changeOrigin: true}))
 
 // proxy api requests
 Object.keys(proxyTable).forEach(function (context) {

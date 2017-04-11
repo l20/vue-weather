@@ -3,16 +3,17 @@
 	    <div class="c-row">
 	        <div class="c-span4">
 	            <a href="####" class="aw-weather-pollution-area">
-	                <p class="aw-weather-pollution-title">实时空气质量</p>
-	                <p class="aw-weather-pollution-color" transition="gradient" :class="colorLv"><span class="c-gap-right-small aw-weather-poNum aw-list-item">{{AQI}}</span><span>{{AQIDecLv}}</span></p>
+	                <p class="aw-weather-pollution-title">{{cityWeather.aqi ? "实时空气质量" : "当前城市无实时空气质量数据"}}</p>
+	                <p class="aw-weather-pollution-color" v-if="cityWeather.aqi" transition="gradient" :class="colorLv"><span class="c-gap-right-small aw-weather-poNum aw-list-item">{{cityWeather.aqi || "--"}}</span><span>{{cityWeather.aqi ? AQIDecLv : "未知"}}</span></p>
 	            </a>
 	        </div>
 	        <div class="c-span8">
-	            <div class="aw-weather-wrap"><span class="aw-weather-update"> 更新于 <span>15:22</span></span>
-	                <div class="city-picker-toggle"><span class="aw-weather-changecity"><span>北京</span> <i class="aw-weather-changecity-icon icon-shuffle"></i></span>
+	            <div class="aw-weather-wrap"><span class="aw-weather-update"> 更新于 <span>{{updataTime}}</span></span>
+	                <div class="city-picker-toggle"><span class="aw-weather-changecity"><span>{{cityWeather.city}}</span> <i class="aw-weather-changecity-icon icon-shuffle"></i></span>
 	                </div>
 	            </div>
-	            <div class="aw-weather-date aw-weather-date-small"><span class="aw-weather-date-info">4月8日 周六</span><span class="aw-weather-lunar">三月十二</span></div>
+	            <div class="aw-weather-date aw-weather-date-small"><span class="aw-weather-date-info" >{{gDate + ' '+ncWeek}}</span> <span class="aw-weather-lunar">{{nDate}}</span></div>
+	            <div class="aw-weather-date-gz"><span>{{gzDate}}</span></div>
 	        </div>
 	    </div>
 	</div>
@@ -20,6 +21,9 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {formatDate} from "@/common/js/date";
+import {calendar} from "@/common/js/calendar";
+
 let AQILvs = {
 	'lv1':'优',
 	'lv2':'良',
@@ -31,27 +35,32 @@ let AQILvs = {
 
 export default {
 	props: {
-		AQI: {
-			type: Number,
-			default: 0
+		cityWeather: {
+			type: Object
 		}
 	},
 	data() {
 		return {
+			AQI: parseInt(this.cityWeather.aqi) || 0,
+			// AQI: this.cityWeather.aqi,
 			colorLv: '',
-			AQIDecLv: '未知'
+			AQIDecLv: '未知',
+			updataTime: '',
+			nDate: '',
+			gDate: '',
+			gzDate: '',
+			ncWeek: ''
 		};
 	},
 	watch: {
 		AQI(){
-
 			this.setAQILv();
 		}
 	},
 	methods: {
 		setAQILv() {
-			let AQI = this.AQI,
-			 	AQILvIdx = 0;
+
+			let AQI = this.cityWeather.aqi || 0,AQILvIdx = 0;
 
 			if (AQI <= 50 && AQI >= 0) 		  	AQILvIdx = 0;
 			else if (AQI <= 100 && AQI > 50)  	AQILvIdx = 1;
@@ -63,17 +72,34 @@ export default {
 
 			// 获取对象的所有键和值
 			[this.colorLv, this.AQIDecLv] = Object.entries(AQILvs)[AQILvIdx];
+        	
+			// 获取当前日期、时间戳
+			let date = new Date(Date.parse(new Date()));
+        	this.updataTime = formatDate(date, 'yyyy-MM-dd|hh:mm').split('|')[1];
+
+        	let lunar = calendar.solar2lunar();
+        	this.gDate = `${lunar.lYear}-${lunar.cMonth}-${lunar.cDay}(${lunar.astro})`;
+        	this.ncWeek = `${lunar.ncWeek}`;
+        	this.nDate = `${lunar.IMonthCn}${lunar.IDayCn}`;
+        	this.gzDate = `${lunar.gzYear}年${lunar.gzMonth}月${lunar.gzDay}日`;
 		}
 	},
 	created() {
-		this.setAQILv(); 
+		this.$nextTick(()=>{this.setAQILv();});
+	},
+	updated() {
+		this.$nextTick(()=>{this.setAQILv();});
 	}
 }
 </script>
 
 <style  lang="less" scoped>
 	.page-header {
+		height: 100px;
 	    margin: 0;
+	    position: relative;
+	    z-index: 10;
+		box-sizing: border-box;
 	    padding: 20px .16rem 10px;
 	    background-color: #3e7ebf;
 	    box-shadow: 0 2px 2px rgba(0,0,0,.1);
@@ -138,9 +164,14 @@ export default {
 			    display: inline-block;
 		    }
 	    }
-	    .aw-weather-date{
+	    .aw-weather-date, .aw-weather-date-gz{
 			position: relative;
     		text-align: right;
+	    }
+	    .aw-weather-date-gz span{
+			color: rgba(255, 255, 255, 0.5);
+	    	font-size: 10px;
+	    	text-shadow: 1px 1px 0 rgba(0,0,0,.23);
 	    }
 	    .aw-weather-date-small{
 	    	font-size: .13rem;

@@ -9,13 +9,14 @@
       </li>
     </ul>
     <Yesorno v-on:update="recieveMessage"></Yesorno>
+    <Echarts></Echarts>
   </div>
 </template>
 
 <script  type="text/ecmascript-6">
 import Vue from 'vue';
+import Echarts from '@/components/echarts/echarts';
 import Yesorno from '@/components/getyesorno/getyesorno';
-
 var vm = new Vue();
 export default {
   name: 'hello',
@@ -28,8 +29,6 @@ export default {
   created() {
     var self = this;
     var days = this.$refs;
-      console.log(days);
-      console.log(days.days);
     vm.$nextTick(() => {
       // var spans = days.getElementsByTagName('span');
     });
@@ -38,6 +37,10 @@ export default {
         span.style.color = '#'+(Math.random()*0xffffff<<0).toString(16); 
       });
     }, 100);*/
+
+    // echarts
+    
+
   },
   methods: {
     recieveMessage(data) {
@@ -49,7 +52,8 @@ export default {
     }
   },
   components: {
-    Yesorno
+    Yesorno,
+    Echarts
   }
 }
 </script>
