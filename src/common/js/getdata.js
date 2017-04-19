@@ -37,7 +37,7 @@ var getWeatherInfo = () => {
     return new Promise((resolve, reject) => {
     	// 等两个函都获取到数据
         Axios.all([getAllCity(), getCurrentPositionByIP()])
-        .then(Axios.spread(function(city, position) {
+        .then(Axios.spread(function(city, position) {	
 
             let citys = city.data.data;
             let cityNamesByIp = position.data.data.address;

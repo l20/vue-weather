@@ -8,8 +8,6 @@
         <p class="days"><span class="weather-type">{{items.type}}</span>| <span class="wind-dir">{{items.fengxiang}}</span> | <span class="wind-power">{{items.fengli}}</span>| <span class="temp-max">{{items.high}}</span>|<span class="temp-min">{{items.low}}</span></p>
       </li>
     </ul>
-    <Yesorno v-on:update="recieveMessage"></Yesorno>
-    <Echarts></Echarts>
   </div>
 </template>
 

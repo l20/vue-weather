@@ -1,10 +1,9 @@
 <template>
   <div id="app">
-    <!-- <router-view></router-view> -->
     <div class="page-wrapper">
     	<wheader :cityWeather="cityWeather" class="page-header"></wheader>
 	    <div class="page-content c-container">
-			<today :cityWeather="cityWeather"></today>
+			<today :cityWeather="cityWeather" ></today>
 			
 	    </div>
     </div>
@@ -16,14 +15,18 @@
 import wheader from "@/components/header/header";
 import today from "@/components/today/today";
 import * as getData from "@/common/js/getdata";
+import {weatherType2Icon} from "@/common/js/weathertype2icon";
+
 	export default {
 	  name: 'app',
 	  created() {
 	  	this.gethot();
+	  	// weatherType2Icon("小雪");
 	  },
 	  data() {
 	  	return {
 			cityWeather: {},
+			// forecast: {},
 			AQIDecLv: '未知'
 		};
 	  },
@@ -36,6 +39,7 @@ import * as getData from "@/common/js/getdata";
 	  		var self = this;
 	  		getData.getWeatherInfo().then(data => {
 	  			self.cityWeather = data;
+	  			// self.forecast = data.forecast;
 	  			console.log(data);
 	  		});
 	  	}

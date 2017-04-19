@@ -1,25 +1,41 @@
 <template>
     	<section class="jumbotron">
 		    <div class="aw-weather-head">
-		        <div class="aw-weather-maininfo">
-		            <p class="temp-line"><span class="aw-weather-currentTemp"><span>{{cityWeather.wendu}}</span><span class="aw-weather-current-unit">°</span></span>
-		            	<span class="aw-weather-animate-icon"><span class="cloudy2sunny"></span></span>
-		            <span class="aw-weather-currentWeather">{{cityWeather.forecast[0] ? cityWeather.forecast[0].type : '未知'}}</span></p>
-		            <div class="aw-weather-wind-info">
-		                <div class="aw-weather-wind c-line-clamp1"><span>今天：</span> <span class="aw-weather-temp-range c-gap-right">{{tempratrueScope}}</span><span class="aw-weather-wind-dir" v-if="cityWeather.forecast[0].fengxiang">{{cityWeather.forecast[0].fengxiang}}</span><span>{{cityWeather.forecast[0] ? cityWeather.forecast[0].fengli : '未知'}}</span></div>
-		            </div>
-		            <div class="aw-weather-prompt">
-		            	<span class="aw-weather-prompt-text">{{cityWeather.ganmao}}</span>
-		            </div>
-		            <div class="aw-weather-abs">
-		                <div class="btn-24h-toggle c-gap-right" data-toggle="ripple"> 24小时 <span class="aw-weather-24-span">预报</span> <span class="c-gap-left-small icon-circle-down"></span></div>
-		            </div>
-		        </div>
-		    </div>
+			    <div class="aw-weather-maininfo">
+			        <p class="temp-line">
+			        	<span class="aw-weather-currentTemp">
+			        		<span>{{cityWeather.wendu}}</span><span class="aw-weather-current-unit">°</span>
+			        	</span>
+			            <span class="aw-weather-animate-icon">
+			            	<span :class="classType"></span>
+			            </span>
+			            <span class="aw-weather-currentWeather">{{weatherType || '未知'}}</span>
+			        </p>
+			        <div class="aw-weather-wind-info">
+			            <div class="aw-weather-wind c-line-clamp1">
+				            <span>今天：</span> <span class="aw-weather-temp-range c-gap-right">{{temperatureScope}}</span>
+				            <span class="aw-weather-wind-dir">{{windInfo.dir || '未知'}}</span>
+				            <span>{{windInfo.lv || '未知'}}</span>
+			        	</div>
+			        </div>
+			        <div class="aw-weather-prompt">
+			            <span class="aw-weather-prompt-text">{{cityWeather.ganmao}}</span>
+			        </div>
+			        <div class="aw-weather-abs">
+			            <div class="btn-24h-toggle c-gap-right" data-toggle="ripple"> 24小时 <span class="aw-weather-24-span">预报</span> <span class="c-gap-left-small icon-circle-down"></span></div>
+			        </div>
+			    </div>
+			</div>
+    		<forecast24h></forecast24h>
 		</section>
 </template>
 
 <script type="text/ecmascript-6">
+
+import forecast24h from '@/components/24hforecast/24hforecast';
+import {weatherType2Icon} from "@/common/js/weathertype2icon";
+// import  from "@/components/otherdays/otherdays";
+
 
 export default {
 	props: {
@@ -27,30 +43,38 @@ export default {
 			type: Object
 		}
 	},
-	data() {
-		return {
-			tempratrueScope: ''
+	computed: {
+		temperatureScope() {
+			if (!this.cityWeather.forecast) return;
+			
+			let highTmp = this.cityWeather.forecast[0].high.split(' ')[1].split('℃')[0];
+			let lowTmp = this.cityWeather.forecast[0].low.split(' ')[1].split('℃')[0];
 
-		}
-	},
-	methods: {
-		setTodayWeather() {
-			if (this.cityWeather) {
-				let highTmp = this.cityWeather.forecast[0].high.split(' ')[1].split('℃')[0];
-				let lowTmp = this.cityWeather.forecast[0].low.split(' ')[1].split('℃')[0];
+			return `${lowTmp}~${highTmp}°C`;
+		},
+		classType() {
+			if (!this.cityWeather.forecast) return;
 
-				this.tempratrueScope = `${lowTmp}~${highTmp}°C`;
-			console.log(highTmp,lowTmp);
-				
-			}
+			return weatherType2Icon(this.cityWeather.forecast[0].type);
+		},
+		weatherType() {
+			if (!this.cityWeather.forecast) return;
+
+			return this.cityWeather.forecast[0].type;
+		},
+		windInfo() {
+			if (!this.cityWeather.forecast) return;
+			let obj = {};
+		 	obj.lv = this.cityWeather.forecast[0].fengli;
+		 	obj.dir = this.cityWeather.forecast[0].fengxiang;
+
+		 	return obj;
 		}
+		
 	},
-	created() {
-		this.setTodayWeather();
-	},
-	updated() {
-		this.setTodayWeather();
-	}	
+	components: {
+		forecast24h
+	}
 }
 </script>
 
@@ -85,10 +109,10 @@ export default {
     				}
     				.aw-weather-currentWeather{
     					text-shadow: @shadow-1_5;
-					    position: relative;
-					    left: 1.1rem;
-					    bottom: .06rem;
-					    font-size: .4rem;
+					    position: absolute;
+					    left: 2.1rem;
+					    bottom: .16rem;
+					    font-size: 0.23rem;
 					    font-weight: lighter;
     				}
 					.aw-weather-animate-icon{

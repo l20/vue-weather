@@ -16,6 +16,7 @@ var app = express()
 // --------------------路由开始
 var appData = require('../static/city.json');
 var cityInfo = require('../static/citydata.json');
+var forcast24 = require('../static/forcast.json');
 
 var apiRoutes = express.Router();
 
@@ -30,6 +31,13 @@ apiRoutes.get('/citycode', function (req, res) {
   res.json({
     errno: 0,
     data: cityInfo
+  });
+});
+
+apiRoutes.get('/forcast24', function (req, res) {
+  res.json({
+    errno: 0,
+    data: forcast24
   });
 });
 
