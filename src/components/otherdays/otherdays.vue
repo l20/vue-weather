@@ -1,108 +1,268 @@
 <template>
-	<div id="chart-6d" class="chart wa-sg-weather-chart">
-        <div class="canvas c-row">
-            <svg version="1.2" baseProfile="tiny">
-                <path stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.5" fill="none" d="M 103.5 91 C 128 91 148 101.47619047619048 172.5 101.47619047619048 C 197 101.47619047619048 217 101.47619047619048 241.5 101.47619047619048 C 266 101.47619047619048 286 111.95238095238095 310.5 111.95238095238095 C 335 111.95238095238095 355 114.57142857142857 379.5 114.57142857142857"></path>
-                <path stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" d="M 34.5 104.0952380952381 C 59 104.0952380952381 79 91 103.5 91"></path>
-                <circle cx="103.5" cy="91" r="2.5" fill="#fff"></circle>
-                <path stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.5" fill="none" d="M 103.5 135.52380952380952 C 128 135.52380952380952 148 135.52380952380952 172.5 135.52380952380952 C 197 135.52380952380952 217 140.76190476190476 241.5 140.76190476190476 C 266 140.76190476190476 286 143.38095238095238 310.5 143.38095238095238 C 335 143.38095238095238 355 146 379.5 146"></path>
-                <path stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" d="M 34.5 143.38095238095238 C 59 143.38095238095238 79 135.52380952380952 103.5 135.52380952380952"></path>
-                <circle cx="103.5" cy="135.52380952380952" r="2.5" fill="#fff"></circle>
-            </svg>
-            <div class="c-span2 weather-bar" data-toggle="ripple">
-                <div class="content">
-                    <div class="title c-gap-bottom dim"><span class="day">昨天</span>
-                        <div class="weather-icons"></div>
-                    </div>
-                    <div class="wa-sg-weather-canvas-area">
-                        <div class="pillar" style="top: 13.0952px;"><span class="pillar-max dim">26°</span>
-                            <div class="pillar-chart" style="height: 39.2857px;"></div> <span class="pillar-min dim">11°</span></div>
-                    </div>
-                    <div class="c-gap-top-large wind dim"><span>南风</span>
-                        <div>微风</div>
-                    </div>
-                </div>
-            </div>
-            <div class="c-span2 weather-bar" data-toggle="ripple">
-                <div class="content">
-                    <div class="title c-gap-bottom"><span class="day">今天</span>
-                        <div class="weather-icons"></div>
-                    </div>
-                    <div class="wa-sg-weather-canvas-area">
-                        <div class="pillar" style="top: 0px;"><span class="pillar-max">31°</span>
-                            <div class="pillar-chart pillar-chart-today" style="height: 44.5238px;"></div> <span class="pillar-min">14°</span></div>
-                    </div>
-                    <div class="c-gap-top-large wind"><span>风力</span>
-                        <div>微风</div>
-                    </div>
-                </div>
-            </div>
-            <div class="c-span2 weather-bar active" data-toggle="ripple">
-                <div class="content">
-                    <div class="title c-gap-bottom"><span class="day">明天</span>
-                        <div class="weather-icons"></div>
-                    </div>
-                    <div class="wa-sg-weather-canvas-area">
-                        <div class="pillar" style="top: 10.4762px;"><span class="pillar-max">27°</span>
-                            <div class="pillar-chart" style="height: 34.0476px;"></div> <span class="pillar-min">14°</span></div>
-                    </div>
-                    <div class="c-gap-top-large wind"><span>南风</span>
-                        <div>3-4级</div>
-                    </div>
-                </div>
-            </div>
-            <div class="c-span2 weather-bar" data-toggle="ripple">
-                <div class="content">
-                    <div class="title c-gap-bottom"><span class="day">周一</span>
-                        <div class="weather-icons"></div>
-                    </div>
-                    <div class="wa-sg-weather-canvas-area">
-                        <div class="pillar" style="top: 10.4762px;"><span class="pillar-max">27°</span>
-                            <div class="pillar-chart" style="height: 39.2857px;"></div> <span class="pillar-min">12°</span></div>
-                    </div>
-                    <div class="c-gap-top-large wind"><span>北风</span>
-                        <div>3-4级</div>
-                    </div>
-                </div>
-            </div>
-            <div class="c-span2 weather-bar" data-toggle="ripple">
-                <div class="content">
-                    <div class="title c-gap-bottom"><span class="day">周二</span>
-                        <div class="weather-icons"></div>
-                    </div>
-                    <div class="wa-sg-weather-canvas-area">
-                        <div class="pillar" style="top: 20.9524px;"><span class="pillar-max">23°</span>
-                            <div class="pillar-chart" style="height: 31.4286px;"></div> <span class="pillar-min">11°</span></div>
-                    </div>
-                    <div class="c-gap-top-large wind"><span>北风</span>
-                        <div>3-4级</div>
-                    </div>
-                </div>
-            </div>
-            <div class="c-span2 weather-bar" data-toggle="ripple">
-                <div class="content">
-                    <div class="title c-gap-bottom"><span class="day">周三</span>
-                        <div class="weather-icons"></div>
-                    </div>
-                    <div class="wa-sg-weather-canvas-area">
-                        <div class="pillar" style="top: 23.5714px;"><span class="pillar-max">22°</span>
-                            <div class="pillar-chart" style="height: 31.4286px;"></div> <span class="pillar-min">10°</span></div>
-                    </div>
-                    <div class="c-gap-top-large wind"><span>北风</span>
-                        <div>3-4级</div>
+<section class="c-row-tile detail">
+    <transition name="fade">
+        <forecast24h v-if="show" class="aw-forecast24h"></forecast24h>
+    </transition>
+	<div id="chart-6d" class="chart aw-weather-chart">
+            <div class="canvas c-row">
+                <svg version="1.2" baseProfile="tiny">
+                    <path stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.7" fill="none" :d="paht1"></path>
+                    <path stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" :d="paht3"></path>
+                    <circle :cx="allWeatherInfo[1].x" :cy="allWeatherInfo[1].yh" r="2.5" fill="#fff"></circle>
+                    <path stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.7" fill="none" :d="paht2"></path>
+                    <path stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" :d="paht4"></path>
+                    <circle :cx="allWeatherInfo[1].x" :cy="allWeatherInfo[1].yl" r="2.5" fill="#fff"></circle>
+                </svg>
+                <div class="c-span2 weather-bar" v-for="(value, index) in allWeatherInfo" @click.stop="rippleAction($event)">
+                    <div class="content">
+                        <div class="title c-gap-bottom" :class="{dim:index == 0}"><span class="value">{{value.date}}</span>
+                            <div class="weather-icons" :class="weatherIconSm(value.type)"></div>
+                        </div>
+                        <div class="aw-weather-canvas-area">
+                            <div class="pillar"><span class="pillar-max" :style="{top:value.yh-25+'px'}" :class="{dim:index == 0}">{{value.high}}℃</span><span class="pillar-min" :style="{top:value.yl-3+'px'}" :class="{dim:index == 0}">{{value.low}}℃</span></div>
+                        </div>
+                        <div class="c-gap-top-large wind" :class="{dim:index == 0}"><span>{{value.fengxiang}}</span>
+                            <div>{{value.fengli}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script type="text/ecmascript-6">
 
+import {weatherType2IconSm} from "@/common/js/weathertype2icon";
+import forecast24h from '@/components/24hforecast/24hforecast';
+import {extend,getSVGPathByCoordinate} from "@/common/js/common";
+import {ripple} from "@/common/js/ripple";
+
+const HEIGHT = 173.5000000000009;
+
+const RATIO  = 3.0555555555556;
+
 export default {
+    props: {
+        cityWeather: {
+            type: Object
+        }
+    },
+    data() {
+        return {
+            show: false,
+            paht1: '',
+            paht2: '',
+            paht3: '',
+            paht4: '',
+            screenWidth: document.body.clientWidth             
+        }
+    },
+    created() {
+        const that = this;
+        this.$root.eventHub.$on('aw.show.forecast24h', function (e) {
+            that.show = !that.show;
+        });
+    },
+    mounted() {
+        const that = this;
+        // 检测屏幕尺寸变化设置svg曲线宽度
+        window.onresize = () => {
+            return (() => {
+                window.screenWidth = document.body.clientWidth;
+                that.screenWidth = window.screenWidth;
+            })();
+        }
+    },
+     /*watch: {
+       screenWidth (val) {
+            if (!this.timer) {
+                this.screenWidth = val;
+                this.timer = true;
+                let that = this;
+                // 优化频繁刷新导致卡顿问题
+                setTimeout(function () {
+                    that.timer = false;
+                }, 400);
+            }
+        },
+    },*/
+    methods: {
+        rippleAction(e) {
+            this.$nextTick(() => {
+                ripple(e.currentTarget, e);
+            });
+        },
+        // 日期转周一...周日
+        date2Week(val,idx) {
+            return idx==0 ? '\u6628\u5929' : idx==1 ? '\u4eca\u5929' : idx==2 ? '\u660e\u5929' : '\u5468' + (val.date.split('\u65e5')[1].split('\u671f')[1] === '\u5929' ? '\u65e5' : val.date.split('\u65e5')[1].split('\u671f')[1]);
+        },
+        weatherIconSm(type) {
+            return weatherType2IconSm(type);
+        },
+    },
+    computed: {
+        allWeatherInfo() {
+
+            if (!this.cityWeather.yesterday || !this.cityWeather.forecast) return ;
+
+            // 拷贝对象修改
+            let yesterday = [], otherdays = [];
+            yesterday[0] = extend({}, this.cityWeather.yesterday),
+
+            this.cityWeather.forecast.forEach((item) => {
+                otherdays.push(extend({}, item));
+            });
+
+            // 重命名键名
+            Object.defineProperty(yesterday[0], 'fengli', {value: yesterday[0].fl});
+            Object.defineProperty(yesterday[0], 'fengxiang', {value: yesterday[0].fx});
+
+            delete yesterday[0].fl;
+            delete yesterday[0].fx;
+
+            // 合拼数据
+            let newO  = yesterday.concat(otherdays),
+
+            // 根据屏幕尺寸变化设置svg宽度
+            startX = this.screenWidth / 6 / 2,
+            // 两条曲线路径
+            path1 = [],path2 = [];
+
+            for (let i = 0, left = startX; i < newO.length; i++) {
+                 path1[i] = {};path2[i] = {};
+
+                // 日期转换
+                newO[i].date = this.date2Week(newO[i], i);
+
+                // 提取数字
+                newO[i].high = parseInt(newO[i].high.match(/[1-9](?:\d{0,2})(?:,\d{3})*|0/)[0]);
+                newO[i].low  =  parseInt(newO[i].low.match(/[1-9](?:\d{0,2})(?:,\d{3})*|0/)[0]);
+
+                // 根据温度换算坐标
+                Object.defineProperty(newO[i], 'x', {value: left});
+                path1[i].x = left;
+                path2[i].x = left;
+
+                Object.defineProperty(newO[i], 'yh', {value: HEIGHT - newO[i].high * RATIO});
+                path1[i].y = newO[i].yh;
+
+                Object.defineProperty(newO[i], 'yl', {value: HEIGHT - newO[i].low  * RATIO});
+                path2[i].y = newO[i].yl;
+
+                left += startX*2;
+            }
+
+            this.paht1 = getSVGPathByCoordinate(path1.slice(1));
+            this.paht2 = getSVGPathByCoordinate(path2.slice(1));
+            this.paht3 = getSVGPathByCoordinate(path1.slice(0, 2));
+            this.paht4 = getSVGPathByCoordinate(path2.slice(0, 2));
+
+            return newO;
+        }
+    },
+    components: {
+        forecast24h
+    }
 }
 </script>
 
-<style  lang="less">
-
+<style  lang="less" scoped>
+.detail{
+   background-color: hsla(0,0%,100%,.08);
+   flex-grow: 1;
+   display: flex;
+   flex-direction: column; 
+   overflow-y: auto;
+   .aw-forecast24h{
+        transition: opacity 0.7s;
+        &.fade-enter-active, &.fade-leave-active {
+          opacity: 1;
+        }
+        &.fade-enter, &.fade-leave-to{
+          opacity: 0;
+        }
+    }
+    .aw-weather-chart{
+        position: relative;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    .chart{
+        overflow: hidden;
+    }
+    #chart-6d {
+        .canvas{
+            position: relative;
+            padding: 0!important;
+        }
+        .c-row{
+            margin-left: 0;
+            margin-right: 0;
+            svg{
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+            }
+            .weather-bar{
+                padding: .11rem 0;
+                overflow: hidden;
+                position: relative;
+                > .content{
+                    border-right: 1px solid hsla(0,0%,100%, .12);
+                    .title{
+                        padding: 0!important;
+                        text-align: center;
+                        color: #fff;
+                        .day{
+                            display: inline-block;
+                            line-height: 22px;
+                        }
+                        .weather-icons{
+                            font-size: .22rem;
+                        }
+                    }
+                    .dim{
+                        color: hsla(0,0%,100%, .5);
+                    }
+                    .aw-weather-canvas-area{
+                        // position: relative;
+                        height: 100px;
+                        .pillar{
+                            width: 100%;
+                            // position: absolute;
+                            text-align: center;
+                            color: #fff;
+                            span{
+                                font-size: 14px;
+                                display: inline-block;
+                                line-height: 21px;
+                                position: absolute;
+                                left: 0;
+                                right: 0;
+                            }
+                            .pillar-max{
+                                margin-bottom: 6px;
+                            }
+                            .pillar-min{
+                                margin-top: 6px;
+                            }
+                        }
+                    }
+                    .wind{
+                        color: #fff;
+                        font-size: 12px;
+                        text-align: center;
+                        line-height: 16px;
+                        padding: 0!important;
+                    }
+                }
+                &.active {
+                    background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.1))
+                }
+            }
+        }
+    }
+}
 </style>

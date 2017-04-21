@@ -4,16 +4,16 @@
     	<wheader :cityWeather="cityWeather" class="page-header"></wheader>
 	    <div class="page-content c-container">
 			<today :cityWeather="cityWeather" ></today>
-			
+			<otherdays :cityWeather="cityWeather"></otherdays>
 	    </div>
     </div>
-    <!-- <button @click="gethot">获取数据</button> -->
   </div>
 </template>
-
 <script>
+
 import wheader from "@/components/header/header";
 import today from "@/components/today/today";
+import otherdays from "@/components/otherdays/otherdays";
 import * as getData from "@/common/js/getdata";
 import {weatherType2Icon} from "@/common/js/weathertype2icon";
 
@@ -21,7 +21,6 @@ import {weatherType2Icon} from "@/common/js/weathertype2icon";
 	  name: 'app',
 	  created() {
 	  	this.gethot();
-	  	// weatherType2Icon("小雪");
 	  },
 	  data() {
 	  	return {
@@ -32,7 +31,8 @@ import {weatherType2Icon} from "@/common/js/weathertype2icon";
 	  },
 	  components: {
 	  	wheader,
-	  	today
+	  	today,
+	  	otherdays
 	  },
 	  methods: {
 	  	gethot() {
@@ -55,16 +55,30 @@ import {weatherType2Icon} from "@/common/js/weathertype2icon";
 	.page-wrapper{
 		width: 100%;
 		height: 100%;
+		overflow: auto;
 		.page-content{
-			width: 100%;
+			/* width: 100%;
 			top: 100px;
 			bottom: 0;
 			margin: 0;
 			position: fixed;
 			flex-direction: column;
-			box-sizing: border-box;
+			box-sizing: border-box; */
 			background-image: -webkit-linear-gradient(top, #3e7ebf, #6ec2ff);
+
+		    margin: 0;
+		    padding-top: 1.1rem;
+		    padding-bottom: 0;
+		    display: flex;
+		    flex-direction: column;
+		    min-height: 100%;
+		    box-sizing: border-box;
 		}
+	}
+	.page-wrapper::-webkit-scrollbar{
+	    display: none;
+	    width: 0;
+	    background: transparent;
 	}
   }
 </style>

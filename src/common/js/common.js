@@ -1,3 +1,16 @@
+var extend = (des, src, override) =>  {
+    if (src instanceof Array) {
+        for (var i = 0, len = src.length; i < len; i++)
+            this.extend(des, src[i], override);
+    }
+    for (var i in src) {
+        if (override || !(i in des)) {
+            des[i] = src[i];
+        }
+    }
+    return des;
+}
+
 
     /**
      * 获取控制点坐标
@@ -9,7 +22,7 @@
      *   p4 下一个点
      * @return {Array}     2个点坐标数组
      */
-export var getControlPoints = (arr, smooth_value) => {
+var getControlPoints = (arr, smooth_value) => {
         let x0 = arr[0].x, y0 = arr[0].y;
         let x1 = arr[1].x, y1 = arr[1].y;
         let x2 = arr[2].x, y2 = arr[2].y;
@@ -57,7 +70,7 @@ export var getControlPoints = (arr, smooth_value) => {
      * @param  {Number} x2         控制点2横轴方向相对于末尾点的偏移
      * @return {String}            完整的曲线路径
      */
-    export var getSVGPathByCoordinate = (coordinate, x1=21.5, x2=41.5) => {
+var getSVGPathByCoordinate = (coordinate, x1=21.5, x2=41.5) => {
         let str = '';
         for (let i = 0; i < coordinate.length-1; i++) {
             let arr = coordinate.slice(i, i+2); 
@@ -65,3 +78,6 @@ export var getControlPoints = (arr, smooth_value) => {
         }
         return `M${coordinate[0].x},${coordinate[0].y} ${str}`;
     }
+
+
+export {extend,getSVGPathByCoordinate};

@@ -21,21 +21,19 @@
 			        <div class="aw-weather-prompt">
 			            <span class="aw-weather-prompt-text">{{cityWeather.ganmao}}</span>
 			        </div>
-			        <div class="aw-weather-abs">
-			            <div class="btn-24h-toggle c-gap-right" data-toggle="ripple"> 24小时 <span class="aw-weather-24-span">预报</span> <span class="c-gap-left-small icon-circle-down"></span></div>
+			        <div class="aw-weather-abs"> 
+			            <div class="btn-24h-toggle c-gap-right" @click="rippleAction($event)"  ref="btn24htoggle"> 24小时 <span class="aw-weather-24-span">预报</span> <span class="c-gap-left-small" :class="[show ? 'icon-circle-up' : 'icon-circle-down']" ></span></div>
 			        </div>
 			    </div>
 			</div>
-    		<forecast24h></forecast24h>
 		</section>
 </template>
 
 <script type="text/ecmascript-6">
 
-import forecast24h from '@/components/24hforecast/24hforecast';
 import {weatherType2Icon} from "@/common/js/weathertype2icon";
+import {ripple} from "@/common/js/ripple";
 // import  from "@/components/otherdays/otherdays";
-
 
 export default {
 	props: {
@@ -43,12 +41,17 @@ export default {
 			type: Object
 		}
 	},
+	data() {
+		return {
+			show:false
+		}
+	},
 	computed: {
 		temperatureScope() {
 			if (!this.cityWeather.forecast) return;
-			
-			let highTmp = this.cityWeather.forecast[0].high.split(' ')[1].split('℃')[0];
-			let lowTmp = this.cityWeather.forecast[0].low.split(' ')[1].split('℃')[0];
+			// 提取数字
+			let highTmp = this.cityWeather.forecast[0].high.match(/[1-9](?:\d{0,2})(?:,\d{3})*|0/)[0];
+			let lowTmp  = this.cityWeather.forecast[0].low.match(/[1-9](?:\d{0,2})(?:,\d{3})*|0/)[0];
 
 			return `${lowTmp}~${highTmp}°C`;
 		},
@@ -72,9 +75,17 @@ export default {
 		}
 		
 	},
-	components: {
-		forecast24h
+	methods: {
+		rippleAction(e) {
+			this.show = !this.show;
+			// 触发自定义事件,跟其他组件通信
+			this.$root.eventHub.$emit('aw.show.forecast24h');
+		    this.$nextTick(() => {
+				ripple(e.currentTarget, e);
+			});
+		}
 	}
+
 }
 </script>
 
@@ -85,7 +96,8 @@ export default {
 		
 		.jumbotron{
 			color: #fff;
-    		padding: 0 0 .1rem;
+    		padding: 0 0 .08rem;
+    		position: relative;
     		.aw-weather-maininfo{
     			// margin-top: .1rem;
     			position: relative;
@@ -184,6 +196,7 @@ export default {
 					    border-radius: 3px;
 					    background: hsla(0,0%,100%,.1);
 					    overflow: hidden;
+					    position: relative;
     				}
     			}
     		}

@@ -1,11 +1,10 @@
 <template>
-  <section class="c-row-tile detail">
-    <div id="chart-24h" class="chart" style="">
+    <div id="chart-24h" class="chart" >
         <div class="canvas c-gap-top-large">
-            <div class="chart-item" v-for="time in forcast.temp">
-                <div class="item-txt c-gap-bottom">{{time.time}}</div>
+            <div class="chart-item" v-for="time in temperatures">
+                <div class="item-txt c-gap-bottom">{{time.forecast.time}}</div>
                 <div class="weather-icons"></div>
-                <div class="item-num c-gap-top-large">{{time.temp}}℃</div>
+                <div class="item-num c-gap-top-large" :style="{top:time.y-58+'px'}">{{time.forecast.temp}}<span>{{isFa ? "℉" : "℃"}}</span></div>
             </div>
             <svg version="1.2" baseProfile="tiny" class="aw-weather-24-chart-svg" style="width: 550px;">
                 <path stroke="#fff" stroke-width="1" stroke-opacity="0.5" fill="none" :d="path"></path>
@@ -14,60 +13,57 @@
         </div>
     </div>
     
-</section>
-
 </template>
 
 <script  type="text/ecmascript-6">
 
-import {getSVGPathByCoordinate} from "@/common/js/bezier";
+import {getSVGPathByCoordinate} from "@/common/js/common";
 import Axios from 'axios';
 
 // 温度值转换为坐标值比例系数
 const RATIO  = 1.66666665;
 // 零上温度曲线显示范围
 const HEIGHT = 94.66666665;
+// 温度坐标初始偏移
+const BASE = 31.5;
 
 export default {
     data() {
         return {
-            forcast:{},
-            temperatures:''
+            isFa: false,
+            forecast:{},
+            temperatures:'',
         }
     },
     computed: {
-        path() {
-            let temp = Array.from(this.forcast.temp, val => val.temp);
-            return this.temp2Path(temp);
-        }
-    },
-    methods: {
         /**
          * 温度值转换为坐标值        
-         * @param  {Array}  temp  原始温度值
-         * @param  {Number} BASE  温度坐标初始偏移
-         * @param  {Number} SPACE 各温度值间隔间隙
          * @return {String}       SVG路径值
          */
-        temp2Path(temp, BASE = 31.5, SPACE = 63) {
+        path() {
+            var forecast = this.forecast;
             var coordinate = [];
-            var ctrlPos = [];
-            // 构造各温度坐标数据数组
-            for (let i = 0, left = BASE; i < temp.length; i++) {
+            // let temp = Array.from(forecast.temp, val => val.temp);
+            if (!forecast.temp) return;
+
+            // 构造各温度坐标数据
+            for (let i = 0, left = BASE; i < forecast.temp.length; i++) {
                 coordinate[i] = {};
                 Object.defineProperty(coordinate[i], 'x', {value: left});
-                Object.defineProperty(coordinate[i], 'y', {value: HEIGHT - temp[i] * RATIO});
-                left += SPACE;
+                Object.defineProperty(coordinate[i], 'y', {value: HEIGHT - forecast.temp[i].temp * RATIO});
+                Object.defineProperty(coordinate[i], 'forecast', {value: forecast.temp[i]});
+                left += BASE*2;
             }
             this.temperatures = coordinate;
+
             return getSVGPathByCoordinate(coordinate);
         }
     },
     created() {
         let self = this;
         // 请求后台模拟预测的数据
-        Axios.get('/api/forcast24').then((data) => {
-            self.forcast = data.data.data;
+        Axios.get('/api/forecast24').then((data) => {
+            self.forecast = data.data.data;
         });
     }
 }
@@ -75,17 +71,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
-  .detail{
-    background-color: hsla(0,0%,100%,.08);
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
     #chart-24h{
       position: relative;
       height: 128px;
       overflow: hidden;
       color: #fff;
       background-color: hsla(0,0%,100%,.04);
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
       .canvas {
         white-space: nowrap;
         overflow: auto;
@@ -123,7 +115,6 @@ export default {
     .chart{
       overflow: hidden;
     }
-  }
   #chart-6d, .chart .title{
     text-align: center;
   }

@@ -34,7 +34,7 @@ apiRoutes.get('/citycode', function (req, res) {
   });
 });
 
-apiRoutes.get('/forcast24', function (req, res) {
+apiRoutes.get('/forecast24', function (req, res) {
   res.json({
     errno: 0,
     data: forcast24

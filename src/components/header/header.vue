@@ -95,16 +95,22 @@ export default {
 
 <style  lang="less" scoped>
 	.page-header {
-		height: 100px;
-	    margin: 0;
-	    position: relative;
-	    z-index: 10;
+		/* height: 100px;
+			    position: relative;
+			    z-index: 10; */
+			    margin: 0;
 		box-sizing: border-box;
 	    padding: 20px .16rem 10px;
-	    background-color: #3e7ebf;
+	    // background-color: #3e7ebf;
+	    background-color: rgba(62, 126, 191, .6);
 	    box-shadow: 0 2px 2px rgba(0,0,0,.1);
 	    color: #fff;
-
+		
+		position: fixed;
+	    z-index: 1;
+	    top: 0;
+	    left: 0;
+	    right: 0;
 	    .aw-weather-pollution-area{
 	    	display: inline-block;
 		    width: 93px;
