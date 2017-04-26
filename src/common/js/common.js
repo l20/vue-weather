@@ -1,3 +1,10 @@
+/**
+* 深度拷贝对象
+* @param   object   des      生成的目标对象
+* @param   object   src      源对象1
+* @param   object   override 源对象2
+* @return  object            新对象
+*/
 var extend = (des, src, override) =>  {
     if (src instanceof Array) {
         for (var i = 0, len = src.length; i < len; i++)
@@ -11,17 +18,41 @@ var extend = (des, src, override) =>  {
     return des;
 }
 
+/**
+* 快速排序,从小到大排列数组
+* @param  Array  arr   要排序的数组
+* @return Array        完成排序的数组
+*/
+var quickSort = (arr) => {
+ 　　if (arr.length <= 1) { return arr; }//检查数组的元素个数，如果小于等于1，就返回。
+      //接着，选择"基准"（pivot），并将其与原数组分离，再定义两个空数组，用来存放一左一右的两个子集。
+ 　　var pivotIndex = Math.floor(arr.length / 2);
+ 　　var pivot = arr.splice(pivotIndex, 1)[0];
+ 　　var left = [];
+ 　　var right = [];
+     //然后，开始遍历数组，小于"基准"的元素放入左边的子集，大于基准的元素放入右边的子集。
+   　for (var i = 0; i < arr.length; i++){
+ 　　　if (arr[i] < pivot) {
+ 　　　　left.push(arr[i]);
+ 　　　} else {
+　　　　　right.push(arr[i]);
+     　}
+     }
+   //最后，使用递归不断重复这个过程，就可以得到排序后的数组。
+      return quickSort(left).concat([pivot], quickSort(right));
+  };
 
-    /**
-     * 获取控制点坐标
-     * @param  {Array} arr 4个点坐标数组
-     * @param  {Float} smooth_value [0, 1] 平滑度
-     *   p1 上一个点
-     *   p2 左端点
-     *   P3 右端点
-     *   p4 下一个点
-     * @return {Array}     2个点坐标数组
-     */
+
+/**
+* 获取控制点坐标
+* @param  {Array} arr 4个点坐标数组
+* @param  {Float} smooth_value [0, 1] 平滑度
+*   p1 上一个点
+*   p2 左端点
+*   P3 右端点
+*   p4 下一个点
+* @return {Array}     2个点坐标数组
+*/
 var getControlPoints = (arr, smooth_value) => {
         let x0 = arr[0].x, y0 = arr[0].y;
         let x1 = arr[1].x, y1 = arr[1].y;
@@ -63,13 +94,13 @@ var getControlPoints = (arr, smooth_value) => {
         return [{x: ctrl1_x, y: ctrl1_y}, {x: ctrl2_x, y: ctrl2_y}];
     }
 
-    /**
-     * 根据所有温度值计算各段控制点、起始点，返回完整svg三次贝塞尔曲线路径
-     * @param  {Array} coordinate  所有要绘制曲线的温度坐标数据
-     * @param  {Number} x1         控制点1横轴方向相对于末尾点的偏移
-     * @param  {Number} x2         控制点2横轴方向相对于末尾点的偏移
-     * @return {String}            完整的曲线路径
-     */
+/**
+* 根据所有温度值计算各段控制点、起始点，返回完整svg三次贝塞尔曲线路径
+* @param  {Array} coordinate  所有要绘制曲线的温度坐标数据
+* @param  {Number} x1         控制点1横轴方向相对于末尾点的偏移
+* @param  {Number} x2         控制点2横轴方向相对于末尾点的偏移
+* @return {String}            完整的曲线路径
+*/
 var getSVGPathByCoordinate = (coordinate, x1=21.5, x2=41.5) => {
         let str = '';
         for (let i = 0; i < coordinate.length-1; i++) {
@@ -80,4 +111,4 @@ var getSVGPathByCoordinate = (coordinate, x1=21.5, x2=41.5) => {
     }
 
 
-export {extend,getSVGPathByCoordinate};
+export {extend,quickSort,getSVGPathByCoordinate};

@@ -16,6 +16,21 @@ var getCurrentPositionByIP = () => {
 var getAllCity = () => {
     return Axios.get('/api/citycode');
 }
+/**
+ * 获取全国所有县级、市、区名称、拼音
+ * @return object  返回promise对象
+ */
+var getAllCityInfo = () => {
+    return Axios.get('/v1/cities?type=group');
+}
+
+/**
+ * 获取所有热门城市
+ * @return object  返回promise对象
+ */
+var getHotCityInfo = () => {
+    return Axios.get('/v1/cities?type=hot');
+}
 
 /**
  * 根据城市代码请求相应城市的天气信息
@@ -67,4 +82,4 @@ var getWeatherInfo = () => {
     });
 }
 
-export {getWeatherInfo};
+export {getWeatherInfo, getAllCityInfo, getHotCityInfo};

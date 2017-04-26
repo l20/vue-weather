@@ -17,6 +17,8 @@ var app = express()
 var appData = require('../static/city.json');
 var cityInfo = require('../static/citydata.json');
 var forcast24 = require('../static/forcast.json');
+// 城市天气测试
+var testcity = require('../static/testcity.json');
 
 var apiRoutes = express.Router();
 
@@ -40,6 +42,14 @@ apiRoutes.get('/forecast24', function (req, res) {
     data: forcast24
   });
 });
+// 城市天气测试
+apiRoutes.get('/testcity', function (req, res) {
+  res.json({
+    errno: 0,
+    data: testcity
+  });
+});
+
 
 app.use('/api', apiRoutes);
 

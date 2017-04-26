@@ -5,21 +5,21 @@
     </transition>
 	<div id="chart-6d" class="chart aw-weather-chart">
             <div class="canvas c-row">
-                <svg version="1.2" baseProfile="tiny">
+                 <svg version="1.2" baseProfile="tiny">
                     <path stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.7" fill="none" :d="paht1"></path>
                     <path stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" :d="paht3"></path>
                     <circle :cx="allWeatherInfo[1].x" :cy="allWeatherInfo[1].yh" r="2.5" fill="#fff"></circle>
                     <path stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.7" fill="none" :d="paht2"></path>
                     <path stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" :d="paht4"></path>
                     <circle :cx="allWeatherInfo[1].x" :cy="allWeatherInfo[1].yl" r="2.5" fill="#fff"></circle>
-                </svg>
-                <div class="c-span2 weather-bar" v-for="(value, index) in allWeatherInfo" @click.stop="rippleAction($event)">
+                </svg> 
+                <div class="c-span2 weather-bar" v-for="(value, index) in allWeatherInfo" :class="{active:current == index}"  @click.stop="rippleAction($event, index)">
                     <div class="content">
                         <div class="title c-gap-bottom" :class="{dim:index == 0}"><span class="value">{{value.date}}</span>
                             <div class="weather-icons" :class="weatherIconSm(value.type)"></div>
                         </div>
                         <div class="aw-weather-canvas-area">
-                            <div class="pillar"><span class="pillar-max" :style="{top:value.yh-25+'px'}" :class="{dim:index == 0}">{{value.high}}℃</span><span class="pillar-min" :style="{top:value.yl-3+'px'}" :class="{dim:index == 0}">{{value.low}}℃</span></div>
+                            <div class="pillar"><span class="pillar-max" :style="{top:calculateTxtHTop(value.yh)}" :class="{dim:index == 0}">{{value.high}}℃</span><span class="pillar-min" :style="{top:calculateTxtLTop(value.yl)}" :class="{dim:index == 0}">{{value.low}}℃</span></div>
                         </div>
                         <div class="c-gap-top-large wind" :class="{dim:index == 0}"><span>{{value.fengxiang}}</span>
                             <div>{{value.fengli}}</div>
@@ -28,19 +28,26 @@
                 </div>
             </div>
         </div>
+        <daydetail :allWeatherInfo="allWeatherInfo" :screenWidth="screenWidth"></daydetail>
     </section>
 </template>
 
 <script type="text/ecmascript-6">
 
+import {extend,quickSort,getSVGPathByCoordinate} from "@/common/js/common";
 import {weatherType2IconSm} from "@/common/js/weathertype2icon";
 import forecast24h from '@/components/24hforecast/24hforecast';
-import {extend,getSVGPathByCoordinate} from "@/common/js/common";
+import daydetail from '@/components/daydetail/daydetail';
 import {ripple} from "@/common/js/ripple";
 
-const HEIGHT = 173.5000000000009;
+const HEIGHT = 173.50;
 
-const RATIO  = 3.0555555555556;
+const BREAKPOINT_H = 77.20;
+
+const BREAKPOINT_L = 152.00;
+
+const OFFSET_H_Y = 60;
+const OFFSET_L_Y = 60;
 
 export default {
     props: {
@@ -51,47 +58,38 @@ export default {
     data() {
         return {
             show: false,
+            current: 1,
             paht1: '',
             paht2: '',
             paht3: '',
             paht4: '',
+            increase: 0,
             screenWidth: document.body.clientWidth             
         }
     },
     created() {
         const that = this;
-        this.$root.eventHub.$on('aw.show.forecast24h', function (e) {
+        this.$root.eventHub.$on('aw.show.forecast24h', () => {
             that.show = !that.show;
         });
     },
     mounted() {
         const that = this;
-        // 检测屏幕尺寸变化设置svg曲线宽度
-        window.onresize = () => {
+        // 检测屏幕尺寸变化，让svg曲线响应,可能会有些卡顿。
+        /*window.onresize = () => {
             return (() => {
                 window.screenWidth = document.body.clientWidth;
                 that.screenWidth = window.screenWidth;
             })();
-        }
+        }*/
     },
-     /*watch: {
-       screenWidth (val) {
-            if (!this.timer) {
-                this.screenWidth = val;
-                this.timer = true;
-                let that = this;
-                // 优化频繁刷新导致卡顿问题
-                setTimeout(function () {
-                    that.timer = false;
-                }, 400);
-            }
-        },
-    },*/
     methods: {
-        rippleAction(e) {
+        rippleAction(e, index) {
             this.$nextTick(() => {
                 ripple(e.currentTarget, e);
             });
+            this.current = index;
+            this.$root.eventHub.$emit('aw.switch.daydetail', index);
         },
         // 日期转周一...周日
         date2Week(val,idx) {
@@ -100,6 +98,13 @@ export default {
         weatherIconSm(type) {
             return weatherType2IconSm(type);
         },
+        calculateTxtHTop(top) {
+            return top<BREAKPOINT_H ? top+2+'px' : top-22+'px';
+        },
+        calculateTxtLTop(top) {
+            return top>BREAKPOINT_L ? top-30+'px' : top-2+'px';
+        },
+        
     },
     computed: {
         allWeatherInfo() {
@@ -124,35 +129,66 @@ export default {
             // 合拼数据
             let newO  = yesterday.concat(otherdays),
 
-            // 根据屏幕尺寸变化设置svg宽度
-            startX = this.screenWidth / 6 / 2,
-            // 两条曲线路径
-            path1 = [],path2 = [];
+                // 根据屏幕尺寸变化设置svg宽度
+                offsetX = this.screenWidth / 6 / 2,
+                // 两条曲线路径
+                path1 = [],path2 = [];
 
-            for (let i = 0, left = startX; i < newO.length; i++) {
+            let yH = [], yL = [];
+
+            // 提取数字
+            for (let i = 0; i < newO.length; i++) {  
+                yH[i] = parseInt(newO[i].high.match(/-?[1-9](?:\d{0,2})(?:,\d{3})*|0/)[0]);
+                yL[i] = parseInt(newO[i].low.match(/-?[1-9](?:\d{0,2})(?:,\d{3})*|0/)[0]);
+            }
+            // 根据最高温、最低温求相应温度显示坐标系数
+            let allTemp = quickSort(yH.concat(yL)),
+                max = allTemp[allTemp.length-1],
+                min = allTemp[0],
+                ratioH = Math.abs((BREAKPOINT_H + OFFSET_H_Y - HEIGHT)/ -max),     
+                ratioL = Math.abs((BREAKPOINT_L + OFFSET_L_Y - HEIGHT)/ -min);
+                // 被除数为0出现无穷大情况
+                if (ratioH == '-Infinity' || ratioH == 'Infinity') ratioH = 0;    
+                if (ratioL == '-Infinity' || ratioL == 'Infinity') ratioL = 0;
+
+                 
+            // 系数过大显示不正常情况下，统一使用同一系数,保证最高温或最低温位置置于顶部、底部  
+            let offsetHY = OFFSET_H_Y, offsetLY = OFFSET_L_Y;
+
+            if ((HEIGHT - max * ratioH - OFFSET_H_Y).toFixed(2) != BREAKPOINT_H) { // 最高温曲线显示不正常取最低温曲线系数
+                ratioH = ratioL;    
+                offsetHY = HEIGHT - BREAKPOINT_H - max * ratioH;
+            }
+            if ((HEIGHT - min * ratioL - OFFSET_L_Y).toFixed(2) != BREAKPOINT_L) { // 最低温曲线显示不正常取最高温曲线系数
+                ratioL = ratioH;
+                offsetLY = HEIGHT - BREAKPOINT_L - min * ratioL; 
+            }
+
+            // 计算，并将计算结果放入源数组对象中
+            for (let i = 0, left = offsetX; i < newO.length; i++) {  
                  path1[i] = {};path2[i] = {};
 
                 // 日期转换
                 newO[i].date = this.date2Week(newO[i], i);
 
-                // 提取数字
-                newO[i].high = parseInt(newO[i].high.match(/[1-9](?:\d{0,2})(?:,\d{3})*|0/)[0]);
-                newO[i].low  =  parseInt(newO[i].low.match(/[1-9](?:\d{0,2})(?:,\d{3})*|0/)[0]);
+                newO[i].high = yH[i];
+                newO[i].low  = yL[i];
 
                 // 根据温度换算坐标
                 Object.defineProperty(newO[i], 'x', {value: left});
                 path1[i].x = left;
                 path2[i].x = left;
 
-                Object.defineProperty(newO[i], 'yh', {value: HEIGHT - newO[i].high * RATIO});
+                Object.defineProperty(newO[i], 'yh', {value: HEIGHT - newO[i].high * ratioH - offsetHY});
                 path1[i].y = newO[i].yh;
 
-                Object.defineProperty(newO[i], 'yl', {value: HEIGHT - newO[i].low  * RATIO});
+                Object.defineProperty(newO[i], 'yl', {value: HEIGHT - newO[i].low  * ratioL - offsetLY});
                 path2[i].y = newO[i].yl;
 
-                left += startX*2;
+                left += offsetX*2;
             }
-
+            
+            // 绘制四条三次贝塞尔曲线
             this.paht1 = getSVGPathByCoordinate(path1.slice(1));
             this.paht2 = getSVGPathByCoordinate(path2.slice(1));
             this.paht3 = getSVGPathByCoordinate(path1.slice(0, 2));
@@ -162,7 +198,8 @@ export default {
         }
     },
     components: {
-        forecast24h
+        forecast24h,
+        daydetail
     }
 }
 </script>
@@ -221,6 +258,9 @@ export default {
                         }
                         .weather-icons{
                             font-size: .22rem;
+                            &.icon-Sun{
+                                color: #ffd905;
+                            }
                         }
                     }
                     .dim{

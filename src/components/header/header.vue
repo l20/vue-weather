@@ -8,7 +8,7 @@
 	            </a>
 	        </div>
 	        <div class="c-span8">
-	            <div class="aw-weather-wrap"><span class="aw-weather-update"> 更新于 <span>{{updataTime}}</span></span>
+	            <div class="aw-weather-wrap" @click="showCityList"><span class="aw-weather-update"> 更新于 <span>{{updataTime}}</span></span>
 	                <div class="city-picker-toggle"><span class="aw-weather-changecity"><span>{{cityWeather.city}}</span> <i class="aw-weather-changecity-icon icon-shuffle"></i></span>
 	                </div>
 	            </div>
@@ -21,6 +21,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+
 import {formatDate} from "@/common/js/date";
 import {calendar} from "@/common/js/calendar";
 
@@ -82,7 +83,10 @@ export default {
         	this.ncWeek = `${lunar.ncWeek}`;
         	this.nDate = `${lunar.IMonthCn}${lunar.IDayCn}`;
         	this.gzDate = `${lunar.gzYear}年${lunar.gzMonth}月${lunar.gzDay}日`;
-		}
+		},
+		showCityList() {
+			this.$root.eventHub.$emit('aw.show.citylist');
+		},
 	},
 	created() {
 		this.$nextTick(()=>{this.setAQILv();});

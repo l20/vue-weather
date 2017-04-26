@@ -30,7 +30,8 @@ module.exports = {
     proxyTable: {
         '/location': 'https://api.map.baidu.com',
         '/weather_mini' : 'http://wthrcdn.etouch.cn',
-        '/WeatherApi' : 'http://wthrcdn.etouch.cn'
+        '/WeatherApi' : 'http://wthrcdn.etouch.cn',
+        '/v1' : 'https://mainsite-restapi.ele.me',
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

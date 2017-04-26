@@ -1,20 +1,24 @@
 <template>
   <div id="app">
-    <div class="page-wrapper">
+    <div class="page-wrapper" v-if="show">
     	<wheader :cityWeather="cityWeather" class="page-header"></wheader>
 	    <div class="page-content c-container">
 			<today :cityWeather="cityWeather" ></today>
 			<otherdays :cityWeather="cityWeather"></otherdays>
 	    </div>
     </div>
+	 <citylist></citylist>
   </div>
 </template>
 <script>
 
-import wheader from "@/components/header/header";
+import Axios from 'axios';
+
 import today from "@/components/today/today";
-import otherdays from "@/components/otherdays/otherdays";
 import * as getData from "@/common/js/getdata";
+import wheader from "@/components/header/header";
+import citylist from "@/components/citylist/citylist";
+import otherdays from "@/components/otherdays/otherdays";
 import {weatherType2Icon} from "@/common/js/weathertype2icon";
 
 	export default {
@@ -25,21 +29,22 @@ import {weatherType2Icon} from "@/common/js/weathertype2icon";
 	  data() {
 	  	return {
 			cityWeather: {},
-			// forecast: {},
-			AQIDecLv: '未知'
+			test: {},
+			show: true,
+			AQIDecLv: '未知',
 		};
 	  },
 	  components: {
-	  	wheader,
 	  	today,
-	  	otherdays
+	  	wheader,
+	  	citylist,
+	  	otherdays,
 	  },
 	  methods: {
 	  	gethot() {
 	  		var self = this;
 	  		getData.getWeatherInfo().then(data => {
 	  			self.cityWeather = data;
-	  			// self.forecast = data.forecast;
 	  			console.log(data);
 	  		});
 	  	}
@@ -75,10 +80,6 @@ import {weatherType2Icon} from "@/common/js/weathertype2icon";
 		    box-sizing: border-box;
 		}
 	}
-	.page-wrapper::-webkit-scrollbar{
-	    display: none;
-	    width: 0;
-	    background: transparent;
-	}
+	
   }
 </style>

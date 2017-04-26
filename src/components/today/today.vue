@@ -4,7 +4,7 @@
 			    <div class="aw-weather-maininfo">
 			        <p class="temp-line">
 			        	<span class="aw-weather-currentTemp">
-			        		<span>{{cityWeather.wendu}}</span><span class="aw-weather-current-unit">°</span>
+			        		<span>{{cityWeather.wendu}}</span><span class="aw-weather-current-unit">℃</span>
 			        	</span>
 			            <span class="aw-weather-animate-icon">
 			            	<span :class="classType"></span>
@@ -33,7 +33,6 @@
 
 import {weatherType2Icon} from "@/common/js/weathertype2icon";
 import {ripple} from "@/common/js/ripple";
-// import  from "@/components/otherdays/otherdays";
 
 export default {
 	props: {
@@ -90,10 +89,18 @@ export default {
 </script>
 
 <style  lang="less" scoped>
-
+/**
+ * 变量、函数定义区
+ */
 	@shadow-1_5: 1.5px 1.5px 0 rgba(0,0,0,.23);
 	@shadow-1: 1px 1px 0 rgba(0,0,0,.23);
-		
+
+	.icon-position (@left: 68px, @top: -98px) {	
+		left: @left;
+		top: @top;
+	}
+
+// =================================================
 		.jumbotron{
 			color: #fff;
     		padding: 0 0 .08rem;
@@ -115,51 +122,44 @@ export default {
 					    	text-shadow: @shadow-1;
 					    	position: absolute;
 						    top: 20px;
-						    font-size: .3rem;
-						    font-weight: 700;
+						    font-size: .2rem;
+						    font-weight: 100;
 					    }
     				}
     				.aw-weather-currentWeather{
     					text-shadow: @shadow-1_5;
-					    position: absolute;
-					    left: 2.1rem;
-					    bottom: .16rem;
+					    position: relative;
+					    left: 1rem;
+					    bottom: .08rem;
 					    font-size: 0.23rem;
 					    font-weight: lighter;
     				}
 					.aw-weather-animate-icon{
-						position: absolute;
+						margin-left: 0.3rem;
 						display: inline-block;
 						transform:scale(.6);
 						top: .1rem;
 						left: .95rem;
 						.cloudy{
-							left: 96px;
-							top: 30px;
+							.icon-position;
 						}
 						.rainy{
-							left: 91px;
-							top: 32px;
+							.icon-position;
 						}
 						.rainbow{
-							left: 91px;
-							top: 32px;
+							.icon-position;
 						}
 						.starry{
-							left: 91px;
-							top: 130px;
+							.icon-position(68px, 0);
 						}
 						.stormy{
-							left: 91px;
-							top: 32px;
+							.icon-position;
 						}
 						.snowy{
-							left: 91px;
-							top: 32px;
+							.icon-position;
 						}
 						.cloudy2sunny{
-							left: 70px;
-							top: 20px;
+							.icon-position(60px, -110px);
 						}
 					}
     			}
