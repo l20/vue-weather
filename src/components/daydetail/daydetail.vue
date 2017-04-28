@@ -6,11 +6,12 @@
                 <p class="title"><span>{{value.type}}</span> <span class="c-gap-left"><span>{{value.low}}</span>~<span>{{value.high}}</span>℃</span></p>
                 <div class="c-row">
                     <div class="c-span3 border">
-                        <p class="c-line-clamp1 dim"><span class="c-gap-right-small weather-icons icon-Compass-South" style="transform: rotate(90deg)" :style="{transform:calcuWindDir(value.fengxiang)}"></span> 风力 </p>
+                        <p class="c-line-clamp1 dim"><span class="c-gap-right-small weather-icons icon-compass" :style="{transform:calcuWindDir(value.fengxiang)}"></span> 风力 </p>
                         <p class="c-line-clamp1"><span>{{value.fengxiang}}</span> <span>{{value.fengli}}</span></p>
                     </div>
                     <div class="c-span3">
                         <p class="c-line-clamp1 dim"><span class="weather-icons icon-Sunset2"></span> 日出日落 </p>
+                        <!-- 因API未提供数据，未开发,可根据当前城市经纬度和日期计算，详情谷百 -->
                         <p class="c-line-clamp1"><span>05:38</span>/<span>18:51</span></p>
                     </div>
                 </div>
@@ -24,7 +25,8 @@
 export default {
     props: {
         allWeatherInfo: {
-            type: Array
+            type: Array,
+            default: function () { return {};}
         },
         screenWidth: {
             type: Number,
@@ -43,9 +45,22 @@ export default {
         });
 
     },
+    watch: {  
+      'allWeatherInfo' () {
+        this.index = 1;
+      }, 
+      deep: true
+    },
     methods: {
         calcuWindDir(str) {
-            let text = str == '\u4e1c\u98ce' ? '90deg' : str == '\u897f\u98ce' ? '-90deg' : str == '\u5357\u98ce' ? '180deg' : str == '\u5317\u98ce' ? '0deg' : str == '\u4e1c\u5317\u98ce' ? '45deg' : str == '\u897f\u5317\u98ce' ? '-45deg' : str == '\u4e1c\u5357\u98ce' ? '135deg' : str == '\u897f\u5357\u98ce' ? '-135deg' : 0 + ')';
+            let text = str == '\u4e1c\u98ce'        ? '-135deg' :           // 东风
+                       str == '\u897f\u98ce'        ? '45deg' :             // 西风
+                       str == '\u5357\u98ce'        ? '-45deg' :            // 南风
+                       str == '\u5317\u98ce'        ? '135deg' :            // 北风
+                       str == '\u4e1c\u5317\u98ce'  ? '180deg' :            // 东北风
+                       str == '\u897f\u5317\u98ce'  ? '90deg' :             // 西北风
+                       str == '\u4e1c\u5357\u98ce'  ? '-90deg' :            // 东南风
+                       str == '\u897f\u5357\u98ce'  ? '0deg' : '0';         // 西南风
             return `rotate(${text})`;
         },
     },
@@ -96,8 +111,8 @@ export default {
                         font-size: 0.22rem;
                         vertical-align: sub;
                         display: inline-block;
-                        &.icon-Compass-South {
-                            font-size: 0.18rem;
+                        &.icon-compass {
+                            font-size: 0.15rem;
 
                         }
                     }

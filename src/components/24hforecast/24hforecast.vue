@@ -1,3 +1,4 @@
+<!-- API未提供，这里是模拟的数据 -->
 <template>
     <div id="chart-24h" class="chart" >
         <div class="canvas c-gap-top-large">

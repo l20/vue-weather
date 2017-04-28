@@ -37,7 +37,8 @@ import {ripple} from "@/common/js/ripple";
 export default {
 	props: {
 		cityWeather: {
-			type: Object
+			type: Object,
+            default: function () { return {};}
 		}
 	},
 	data() {
@@ -140,6 +141,9 @@ export default {
 						transform:scale(.6);
 						top: .1rem;
 						left: .95rem;
+						.sunny{
+							.icon-position(90px, -120px);
+						}
 						.cloudy{
 							.icon-position;
 						}

@@ -2,14 +2,14 @@
     <div class="page-header c-container">
 	    <div class="c-row">
 	        <div class="c-span4">
-	            <a href="####" class="aw-weather-pollution-area">
+	            <a href="javascript:void(0)" class="aw-weather-pollution-area">
 	                <p class="aw-weather-pollution-title">{{cityWeather.aqi ? "实时空气质量" : "当前城市无实时空气质量数据"}}</p>
 	                <p class="aw-weather-pollution-color" v-if="cityWeather.aqi" transition="gradient" :class="colorLv"><span class="c-gap-right-small aw-weather-poNum aw-list-item">{{cityWeather.aqi || "--"}}</span><span>{{cityWeather.aqi ? AQIDecLv : "未知"}}</span></p>
 	            </a>
 	        </div>
 	        <div class="c-span8">
-	            <div class="aw-weather-wrap" @click="showCityList"><span class="aw-weather-update"> 更新于 <span>{{updataTime}}</span></span>
-	                <div class="city-picker-toggle"><span class="aw-weather-changecity"><span>{{cityWeather.city}}</span> <i class="aw-weather-changecity-icon icon-shuffle"></i></span>
+	            <div class="aw-weather-wrap" ><span class="aw-weather-update"> 更新于 <span>{{updataTime}}</span></span>
+	                <div class="city-picker-toggle" @click="showCityList"><span class="aw-weather-changecity"><span>{{cityWeather.city}}</span> <i class="aw-weather-changecity-icon icon-shuffle"></i></span>
 	                </div>
 	            </div>
 	            <div class="aw-weather-date aw-weather-date-small"><span class="aw-weather-date-info" >{{gDate + ' '+ncWeek}}</span> <span class="aw-weather-lunar">{{nDate}}</span></div>
@@ -24,6 +24,7 @@
 
 import {formatDate} from "@/common/js/date";
 import {calendar} from "@/common/js/calendar";
+import {ripple} from "@/common/js/ripple";
 
 let AQILvs = {
 	'lv1':'优',
@@ -37,7 +38,8 @@ let AQILvs = {
 export default {
 	props: {
 		cityWeather: {
-			type: Object
+			type: Object,
+            default: function () { return {};}
 		}
 	},
 	data() {
@@ -84,9 +86,16 @@ export default {
         	this.nDate = `${lunar.IMonthCn}${lunar.IDayCn}`;
         	this.gzDate = `${lunar.gzYear}年${lunar.gzMonth}月${lunar.gzDay}日`;
 		},
-		showCityList() {
-			this.$root.eventHub.$emit('aw.show.citylist');
+		showCityList(e) {
+            var app = document.getElementById('app');
+            this.$nextTick(() => {
+                ripple(app, e);
+            });
+            // var timer = setTimeout(() => {
+				this.$root.eventHub.$emit('aw.show.citylist');
+            // }, 100);
 		},
+
 	},
 	created() {
 		this.$nextTick(()=>{this.setAQILv();});

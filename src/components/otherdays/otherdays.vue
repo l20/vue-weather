@@ -52,7 +52,8 @@ const OFFSET_L_Y = 60;
 export default {
     props: {
         cityWeather: {
-            type: Object
+            type: Object,
+            default: function () { return {};}
         }
     },
     data() {
@@ -63,9 +64,14 @@ export default {
             paht2: '',
             paht3: '',
             paht4: '',
-            increase: 0,
             screenWidth: document.body.clientWidth             
         }
+    },
+     watch: {  
+      'cityWeather' () {
+        this.current = 1;
+      }, 
+      deep: true
     },
     created() {
         const that = this;
@@ -150,7 +156,6 @@ export default {
                 // 被除数为0出现无穷大情况
                 if (ratioH == '-Infinity' || ratioH == 'Infinity') ratioH = 0;    
                 if (ratioL == '-Infinity' || ratioL == 'Infinity') ratioL = 0;
-
                  
             // 系数过大显示不正常情况下，统一使用同一系数,保证最高温或最低温位置置于顶部、底部  
             let offsetHY = OFFSET_H_Y, offsetLY = OFFSET_L_Y;
@@ -163,6 +168,8 @@ export default {
                 ratioL = ratioH;
                 offsetLY = HEIGHT - BREAKPOINT_L - min * ratioL; 
             }
+            // 采用跟最高温一样的系数，也可以不用
+            ratioL =  ratioH;
 
             // 计算，并将计算结果放入源数组对象中
             for (let i = 0, left = offsetX; i < newO.length; i++) {  
