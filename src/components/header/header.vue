@@ -22,10 +22,11 @@
 
 <script type="text/ecmascript-6">
 
-import {formatDate} from "@/common/js/date";
+import {formatDate} from "@/common/js/common";
 import {calendar} from "@/common/js/calendar";
 import {ripple} from "@/common/js/ripple";
 
+// 空气质量指数列表
 let AQILvs = {
 	'lv1':'优',
 	'lv2':'良',
@@ -44,15 +45,14 @@ export default {
 	},
 	data() {
 		return {
-			AQI: parseInt(this.cityWeather.aqi) || 0,
-			// AQI: this.cityWeather.aqi,
-			colorLv: '',
-			AQIDecLv: '未知',
-			updataTime: '',
-			nDate: '',
-			gDate: '',
-			gzDate: '',
-			ncWeek: ''
+			AQI: parseInt(this.cityWeather.aqi) || 0, 	//空气质量指数
+			colorLv: '',								//空气质量指数级别颜色
+			AQIDecLv: '未知',							//空气质量指数级别描述
+			updataTime: '',								//更新时间,这里的更新时间因API也未提供所以使用当前的刷新时间
+			nDate: '',									//农历
+			gDate: '',									//公历
+			gzDate: '',									//天干地支
+			ncWeek: ''									//星期
 		};
 	},
 	watch: {
@@ -109,9 +109,9 @@ export default {
 <style  lang="less" scoped>
 	.page-header {
 		/* height: 100px;
-			    position: relative;
-			    z-index: 10; */
-			    margin: 0;
+	    position: relative;
+	    z-index: 10; */
+		margin: 0;
 		box-sizing: border-box;
 	    padding: 20px .16rem 10px;
 	    // background-color: #3e7ebf;
@@ -120,7 +120,7 @@ export default {
 	    color: #fff;
 		
 		position: fixed;
-	    z-index: 1;
+	    z-index: 11;
 	    top: 0;
 	    left: 0;
 	    right: 0;

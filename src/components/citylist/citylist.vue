@@ -11,7 +11,7 @@
           <p class="aw-set-prompt">定位不准确时可手动设置当前城市天气。</p>
           <div class="aw-current-city c-row">
             <h4 class="aw-city-title c-span4" >当前城市</h4>
-            <div class="aw-current-detail c-span8"><span class="aw-current-cityname">{{cityWeather.city}}</span><span class="aw-weather-icons" :class="weatherIconSm(cityWeather.forecast[0].type)"></span><span class="aw-temp">{{cityWeather.wendu}}℃</span><span class="aw-weather-type">{{cityWeather.forecast[0].type}}</span></div>
+            <div class="aw-current-detail c-span8"><span class="aw-current-cityname">{{cityWeather.city}}</span><span class="aw-weather-icons" :class="weatherIconSm(cityWeather.forecast[0].type)"></span><span class="aw-temp">{{isFah ? calcuFah(cityWeather.wendu)+'℉' : cityWeather.wendu+'℃'}}</span><span class="aw-weather-type">{{cityWeather.forecast[0].type}}</span></div>
           </div>
           <h4 class="aw-city-title" >热门城市</h4>
           <ul class="aw-hot-citys clearfix">
@@ -47,6 +47,7 @@
 <script type="text/ecmascript-6">
 import {ripple} from "@/common/js/ripple";
 import * as com from "@/common/js/getdata";
+import {queryData} from "@/common/js/common";
 import {Enumerable} from "@/common/js/linq.min";
 import {weatherType2IconSm} from "@/common/js/weathertype2icon";
     
@@ -60,14 +61,14 @@ export default {
       data () {
         return {
           show: false,
-          current: Infinity,
-          isShow: false,
-          maskIsShow: false,
-          hNum: 0,
-          filterKey: '',
-          hotcity: [],     //热门城市列表
-          cityList: [],   //所有城市列表
-          groupcity: {},   //所有城市列表
+          current: Infinity,  //当前展开城市
+          maskIsShow: false,  //遮罩标志
+          isFah: false,
+          hNum: 0,            //检索块高度
+          filterKey: '',      //表单输入的关键词
+          hotcity: [],        //热门城市列表
+          cityList: [],       //所有城市列表
+          groupcity: {},      //所有城市列表
         };
       },
       computed: {
@@ -106,6 +107,7 @@ export default {
           var filterKey = this.filterKey && this.filterKey.toLowerCase();
           var data = this.cityList;
           if (filterKey) {
+            // 使用linq的json查询工具
             var _city = Enumerable.From(data)
             .Where($ =>  $.name.includes(filterKey) || $.abbr.toLowerCase().includes(filterKey) || $.pinyin.toLowerCase().includes(filterKey))
             .Select($ => $ )
@@ -123,15 +125,26 @@ export default {
             // var timer = setTimeout(() => {
                 this.show = false;
             // }, 150);
+            this.hNum = 0;
+            this.filterKey = '';
+            this.current = Infinity;
+            this.maskIsShow = false;
         },
         weatherIconSm(type) {
             return weatherType2IconSm(type);
         },
+        calcuFah(temp) {
+            return temp * 9 / 5 + 32;
+        }
       },
       created() {
         const that = this;
         this.$root.eventHub.$on('aw.show.citylist', () => {
             that.show = !that.show;
+        });
+        this.isFah = queryData('isFah') || false;
+        this.$root.eventHub.$on('aw.is.Fahrenheit', (msg) => {
+            this.isFah = msg;
         });
 
         //获取热门城市
@@ -166,12 +179,6 @@ export default {
 
   .city-list {
     transition: all .5s;
-    &.fade-enter-active, &.fade-leave-active {
-      opacity: 1;
-    }
-    &.fade-enter, &.fade-leave-to{
-      opacity: 0;
-    }
     top: 0;
     bottom: 0;
     left: 0;
@@ -180,7 +187,13 @@ export default {
     transition: all .5s;
     position: fixed;
     background-color: #fff;
-    z-index: 8;
+    z-index: 20;
+    &.fade-enter-active, &.fade-leave-active {
+      opacity: 1;
+    }
+    &.fade-enter, &.fade-leave-to{
+      opacity: 0;
+    }
     .aw-input-wapper{
       top: 0;
       left: 0;
@@ -248,9 +261,6 @@ export default {
         background-color: #42b983;
         color: rgba(255,255,255,0.66);
         cursor: pointer;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
         user-select: none;
       }
       td {

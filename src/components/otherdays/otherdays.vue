@@ -1,17 +1,18 @@
 <template>
 <section class="c-row-tile detail">
     <transition name="fade">
-        <forecast24h v-if="show" class="aw-forecast24h"></forecast24h>
+        <forecast24h v-if="show" class="aw-forecast24h" :isFah="isFah"></forecast24h>
     </transition>
 	<div id="chart-6d" class="chart aw-weather-chart">
             <div class="canvas c-row">
                  <svg version="1.2" baseProfile="tiny">
-                    <path stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.7" fill="none" :d="paht1"></path>
-                    <path stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" :d="paht3"></path>
+                    <path class="path1" stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.7" fill="none" :d="path1"></path>
+                    <path class="path3" stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" :d="path3"></path>
                     <circle :cx="allWeatherInfo[1].x" :cy="allWeatherInfo[1].yh" r="2.5" fill="#fff"></circle>
-                    <path stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.7" fill="none" :d="paht2"></path>
-                    <path stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" :d="paht4"></path>
+                    <path class="path2" stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.7" fill="none" :d="path2"></path>
+                    <path class="path4" stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" :d="path4"></path>
                     <circle :cx="allWeatherInfo[1].x" :cy="allWeatherInfo[1].yl" r="2.5" fill="#fff"></circle>
+                    <path class="path5" stroke-dasharray="4,4" stroke="#fff" stroke-width="1" fill="none" :d="path5" />
                 </svg> 
                 <div class="c-span2 weather-bar" v-for="(value, index) in allWeatherInfo" :class="{active:current == index}"  @click.stop="rippleAction($event, index)">
                     <div class="content">
@@ -19,7 +20,7 @@
                             <div class="weather-icons" :class="weatherIconSm(value.type)"></div>
                         </div>
                         <div class="aw-weather-canvas-area">
-                            <div class="pillar"><span class="pillar-max" :style="{top:calculateTxtHTop(value.yh)}" :class="{dim:index == 0}">{{value.high}}℃</span><span class="pillar-min" :style="{top:calculateTxtLTop(value.yl)}" :class="{dim:index == 0}">{{value.low}}℃</span></div>
+                            <div class="pillar"><span class="pillar-max" :style="{top:calculateTxtHTop(value.yh, index)}" :class="{dim:index == 0}">{{isFah ? calcuFah(value.high)+'℉' : value.high+'℃'}}</span><span class="pillar-min" :style="{top:calculateTxtLTop(value.yl)}" :class="{dim:index == 0}">{{isFah ? calcuFah(value.low)+'℉' : value.low+'℃'}}</span></div>
                         </div>
                         <div class="c-gap-top-large wind" :class="{dim:index == 0}"><span>{{value.fengxiang}}</span>
                             <div>{{value.fengli}}</div>
@@ -28,24 +29,25 @@
                 </div>
             </div>
         </div>
-        <daydetail :allWeatherInfo="allWeatherInfo" :screenWidth="screenWidth"></daydetail>
+        <daydetail :allWeatherInfo="allWeatherInfo" :screenWidth="screenWidth" :isFah="isFah"></daydetail>
     </section>
 </template>
 
 <script type="text/ecmascript-6">
 
-import {extend,quickSort,getSVGPathByCoordinate} from "@/common/js/common";
+import {extend,quickSort,getSVGPathByCoordinate,addData,queryData} from "@/common/js/common";
 import {weatherType2IconSm} from "@/common/js/weathertype2icon";
 import forecast24h from '@/components/24hforecast/24hforecast';
 import daydetail from '@/components/daydetail/daydetail';
 import {ripple} from "@/common/js/ripple";
 
+// 曲线显示区域
 const HEIGHT = 173.50;
-
+// 最高温断点
 const BREAKPOINT_H = 77.20;
-
+// 最低温断点
 const BREAKPOINT_L = 152.00;
-
+// 最高温、最低温Y轴偏移
 const OFFSET_H_Y = 60;
 const OFFSET_L_Y = 60;
 
@@ -58,13 +60,15 @@ export default {
     },
     data() {
         return {
-            show: false,
-            current: 1,
-            paht1: '',
-            paht2: '',
-            paht3: '',
-            paht4: '',
-            screenWidth: document.body.clientWidth             
+            show: false,    // 24小时预测显示标志
+            current: 1,     // 6天天气预测当前选择标志位
+            path1: '',      // 曲线1
+            path2: '',      // 曲线2
+            path3: '',      // 曲线3
+            path4: '',      // 曲线4
+            path5: '',      // 虚线
+            isFah: queryData('isFah') || false,   // 华氏温度
+            screenWidth: document.body.clientWidth  //获取视口宽度，计算svg曲线。使用onresize事件可随窗口变化响应            
         }
     },
      watch: {  
@@ -75,9 +79,16 @@ export default {
     },
     created() {
         const that = this;
+        // 开启自定义事件和其他组件通信
         this.$root.eventHub.$on('aw.show.forecast24h', () => {
             that.show = !that.show;
         });
+        this.$root.eventHub.$on('aw.is.Fahrenheit', (msg) => {
+            this.isFah = msg;
+        });
+        if (!queryData('isFah')) addData('isFah', this.isFah);
+        
+        this.isFah = queryData('isFah');
     },
     mounted() {
         const that = this;
@@ -95,6 +106,7 @@ export default {
                 ripple(e.currentTarget, e);
             });
             this.current = index;
+            // 事件触发
             this.$root.eventHub.$emit('aw.switch.daydetail', index);
         },
         // 日期转周一...周日
@@ -104,13 +116,16 @@ export default {
         weatherIconSm(type) {
             return weatherType2IconSm(type);
         },
-        calculateTxtHTop(top) {
-            return top<BREAKPOINT_H ? top+2+'px' : top-22+'px';
+        calculateTxtHTop(top, index) {
+
+            return index == 1 ? top-22+'px' : top<BREAKPOINT_H ? top+2+'px' : top-22+'px';
         },
         calculateTxtLTop(top) {
             return top>BREAKPOINT_L ? top-30+'px' : top-2+'px';
         },
-        
+        calcuFah(temp) {
+            return temp * 9 / 5 + 32;
+        }
     },
     computed: {
         allWeatherInfo() {
@@ -196,10 +211,12 @@ export default {
             }
             
             // 绘制四条三次贝塞尔曲线
-            this.paht1 = getSVGPathByCoordinate(path1.slice(1));
-            this.paht2 = getSVGPathByCoordinate(path2.slice(1));
-            this.paht3 = getSVGPathByCoordinate(path1.slice(0, 2));
-            this.paht4 = getSVGPathByCoordinate(path2.slice(0, 2));
+            this.path1 = getSVGPathByCoordinate(path1.slice(1));
+            this.path2 = getSVGPathByCoordinate(path2.slice(1));
+            this.path3 = getSVGPathByCoordinate(path1.slice(0, 2));
+            this.path4 = getSVGPathByCoordinate(path2.slice(0, 2));
+            // 虚线
+            this.path5 = `M${path1[1].x},${path1[1].y} ${path1[1].x},${path2[1].y}`;
 
             return newO;
         }
@@ -238,6 +255,23 @@ export default {
         .canvas{
             position: relative;
             padding: 0!important;
+            // 动画
+            .path1,.path2,.path3,.path4{
+              stroke-dasharray: 1000;
+              stroke-dashoffset: 1000;
+              animation: dash 10s linear 0s infinite;
+                
+            }
+            @-webkit-keyframes dash {
+              to {  
+                stroke-dashoffset: 0;
+              }
+            }
+            @keyframes dash {
+              to {
+                stroke-dashoffset: 0;
+              }
+            }
         }
         .c-row{
             margin-left: 0;

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="page-wrapper" v-if="show">
+    <div class="page-wrapper">
       <wheader :cityWeather="cityWeather" class="page-header"></wheader>
       <div class="page-content c-container">
       <today :cityWeather="cityWeather" ></today>
@@ -25,20 +25,18 @@ import {weatherType2Icon} from "@/common/js/weathertype2icon";
     name: 'app',
     data() {
       return {
-        show: true,
-        cityWeather: {},
-        cityName: '',
-        AQIDecLv: '未知',
+        cityWeather: {},   // 当前城市天气信息
+        cityName: '',      // 当前城市名称
       };
     },
     mounted() {
-
-      this.gethot();
+      this.getData();
     },
     watch: {  
+      // 监测路由参数
       '$route' () {
         this.cityName = this.$route.params.name;
-        this.gethot(this.cityName);
+        this.getData(this.cityName);
       }
     },
     components: {
@@ -48,7 +46,8 @@ import {weatherType2Icon} from "@/common/js/weathertype2icon";
       otherdays,
     },
     methods: {
-      gethot(cityName) {
+      // 获取天气信息
+      getData(cityName) {
         const that = this;
         if (com.queryData('currentCity')) {
           if (!!cityName && com.queryData('currentCity').name != cityName) com.addData('currentCity', {name: cityName}); 

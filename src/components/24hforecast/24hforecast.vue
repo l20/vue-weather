@@ -5,7 +5,7 @@
             <div class="chart-item" v-for="time in temperatures">
                 <div class="item-txt c-gap-bottom">{{time.forecast.time}}</div>
                 <div class="weather-icons"></div>
-                <div class="item-num c-gap-top-large" :style="{top:time.y-58+'px'}">{{time.forecast.temp}}<span>{{isFa ? "℉" : "℃"}}</span></div>
+                <div class="item-num c-gap-top-large" :style="{top:time.y-58+'px'}">{{isFah ? calcuFah(time.forecast.temp) : time.forecast.temp}}<span>{{isFah ? "℉" : "℃"}}</span></div>
             </div>
             <svg version="1.2" baseProfile="tiny" class="aw-weather-24-chart-svg" style="width: 550px;">
                 <path stroke="#fff" stroke-width="1" stroke-opacity="0.5" fill="none" :d="path"></path>
@@ -13,7 +13,6 @@
             </svg>
         </div>
     </div>
-    
 </template>
 
 <script  type="text/ecmascript-6">
@@ -29,11 +28,16 @@ const HEIGHT = 94.66666665;
 const BASE = 31.5;
 
 export default {
+    props: {
+      isFah: {
+        type: Boolean,
+        default: false
+      }
+    },
     data() {
         return {
-            isFa: false,
-            forecast:{},
-            temperatures:'',
+            forecast:{},      //预测数据
+            temperatures:'',  //温度
         }
     },
     computed: {
@@ -60,12 +64,18 @@ export default {
             return getSVGPathByCoordinate(coordinate);
         }
     },
+    methods: {
+      calcuFah(temp) {
+        return temp * 9 / 5 + 32;
+      }
+    },
     created() {
-        let self = this;
-        // 请求后台模拟预测的数据
-        Axios.get('/api/forecast24').then((data) => {
-            self.forecast = data.data.data;
-        });
+      const that = this;
+      
+      // 请求后台模拟预测的数据
+      Axios.get('/api/forecast24').then((data) => {
+          that.forecast = data.data.data;
+      });
     }
 }
 </script>

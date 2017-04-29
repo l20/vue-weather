@@ -3,10 +3,10 @@
         <div class="scroller" :style="{transform: switchSwip}">
             <div class="day" v-for="(value, index) in allWeatherInfo">
                 <p class="c-gap-bottom-small date"><span>{{value.date}}</span> <span class="c-gap-left"></span></p>
-                <p class="title"><span>{{value.type}}</span> <span class="c-gap-left"><span>{{value.low}}</span>~<span>{{value.high}}</span>℃</span></p>
+                <p class="title"><span>{{value.type}}</span> <span class="c-gap-left"><span>{{isFah ? calcuFah(value.low) : value.low}}</span>~<span>{{isFah ? calcuFah(value.high)+'℉' : value.high+'℃'}}</span></span></p>
                 <div class="c-row">
                     <div class="c-span3 border">
-                        <p class="c-line-clamp1 dim"><span class="c-gap-right-small weather-icons icon-compass" :style="{transform:calcuWindDir(value.fengxiang)}"></span> 风力 </p>
+                        <p class="c-line-clamp1 dim"><span class="c-gap-right-small weather-icons icon-compass" :style="{transform:calcuWindDir(value.fengxiang),fontSize:value.fengxiang == '无持续风向' ? 0 : ''}"></span> 风力 </p>
                         <p class="c-line-clamp1"><span>{{value.fengxiang}}</span> <span>{{value.fengli}}</span></p>
                     </div>
                     <div class="c-span3">
@@ -31,15 +31,20 @@ export default {
         screenWidth: {
             type: Number,
             defualt: 0
+        },
+        isFah: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
         return{
-            index : 1,
+            index : 1, //6天天气选择标志
         }
     },
     created() {
         const that = this;
+        // 使用事件通信
         this.$root.eventHub.$on('aw.switch.daydetail', (msg) => {
             that.index = msg;
         });
@@ -52,6 +57,7 @@ export default {
       deep: true
     },
     methods: {
+        // 设置风向标样式
         calcuWindDir(str) {
             let text = str == '\u4e1c\u98ce'        ? '-135deg' :           // 东风
                        str == '\u897f\u98ce'        ? '45deg' :             // 西风
@@ -60,11 +66,15 @@ export default {
                        str == '\u4e1c\u5317\u98ce'  ? '180deg' :            // 东北风
                        str == '\u897f\u5317\u98ce'  ? '90deg' :             // 西北风
                        str == '\u4e1c\u5357\u98ce'  ? '-90deg' :            // 东南风
-                       str == '\u897f\u5357\u98ce'  ? '0deg' : '0';         // 西南风
+                       str == '\u897f\u5357\u98ce'  ? '0deg' : 0;           // 西南风
             return `rotate(${text})`;
         },
+        calcuFah(temp) {
+            return temp * 9 / 5 + 32;
+        }
     },
     computed: {
+        // 天气预报详情组件滑动
        switchSwip() {
             return `translate3d(${-this.screenWidth * this.index}px, 0px, 0px)`;
        } 
