@@ -8,7 +8,7 @@
 
 
 
-## 技术栈
+# 技术栈
 * vue2.0
 * vue-router
 * webpack
