@@ -86,27 +86,23 @@ npm run build
 
 #### 主界面
 
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/msite.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/msite.gif" width="365" height="619"/>
-
+![home](https://github.com/alanWongsGithub/vue-weather/tree/master/screen/home.gif)
 
 #### 界面功能
 
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/food.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/food.gif" width="365" height="619"/>
+![home](https://github.com/alanWongsGithub/vue-weather/tree/master/screen/homeoperation.gif)
 
 
 
 #### 城市列表
 
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/shop_cart.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/shop_cart.gif" width="365" height="619"/>
-
-#### 城市类表选择城市
-
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/confirm1.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/confirmOrder.gif" width="365" height="619"/>
+![home](https://github.com/alanWongsGithub/vue-weather/tree/master/screen/citylist.gif)
 
 
-#### 城市检索
+#### 城市列表选择设置
 
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/search.png" width="365" height="619"/> <img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/search.gif" width="365" height="619"/>
+![home](https://github.com/alanWongsGithub/vue-weather/tree/master/screen/homeoperation.gif)
+
 
 
 
