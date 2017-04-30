@@ -9,6 +9,7 @@
 
 
 # 技术栈
+
 * vue2.0
 * vue-router
 * webpack
@@ -97,7 +98,9 @@ npm run build
 
 ![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/citylistset.gif)
 
+#### 八种纯CSS天气图标
 
+![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/sunny.gif)![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/cloudy.gif)![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/rainy.gif)![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/rainbow.gif)![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/starry.gif)![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/stormy.gif)![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/snowy.gif)![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/cloudy2sunny.gif)
 
 
 
