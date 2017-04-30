@@ -1,15 +1,15 @@
 {
-  "name": "shop",
+  "name": "weather",
   "version": "1.0.0",
-  "description": "this is a shop",
+  "description": "weather",
   "author": "AlanWong <handsome10221@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "node build/build.js",
-    "lint": "eslint --ext .js,.vue src"
+    "build": "node build/build.js"
   },
   "dependencies": {
+    "tween.js": "^16.6.0",
     "vue": "^2.2.2",
     "vue-router": "^2.2.0"
   },
@@ -17,7 +17,6 @@
     "autoprefixer": "^6.4.0",
     "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.22.1",
-    "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-preset-env": "^1.2.1",

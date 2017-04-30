@@ -9,8 +9,7 @@ import * as com from "@/common/js/common";
  */
 var getCurrentPositionByIP = () => {
     let url = '/location/ip?ak=mNc918xjLC42KNsNmn6GGDDLtssZL4zq';
-    // return Axios.get(url);     //使用百度定位API,使用时将注释去掉，自己申请百度AK
-    return Axios.get('/api/city'); //模拟百度定位API得到的数据,使用API定位时将其注释
+    return Axios.get(url);     //使用百度定位API,使用时将注释去掉，自己申请百度AK
 }
 
 /**

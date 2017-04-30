@@ -4,13 +4,15 @@
 			    <div class="aw-weather-maininfo">
 			        <p class="temp-line">
 			        	<span class="aw-weather-currentTemp">
-			        		<span>{{currentTemp}}</span><span class="aw-weather-current-unit">{{isFah ? '℉' : '℃'}}</span>
+			        		<span>{{animatedNumber || (!isFah ? cityWeather.wendu : cityWeather.wendu* 9 / 5 + 32)}}</span><span class="aw-weather-current-unit">{{isFah ? '℉' : '℃'}}</span>
 			        	</span>
 			            <span class="aw-weather-animate-icon">
 			            	<span :class="classType"></span>
 			            </span>
 			            <span class="aw-weather-currentWeather">{{weatherType || '未知'}}</span>
 			        </p>
+					  <!-- <input v-model.number="number" type="number" step="20"> -->
+					  <!-- <p>{{ animatedNumber }}</p> -->
 			        <div class="aw-temp-switch">
 						<input type="checkbox" name="toggle" v-model="isFah">
 						<label for="toggle"><i></i></label>
@@ -40,6 +42,7 @@
 import {weatherType2Icon} from "@/common/js/weathertype2icon";
 import {addData,queryData} from "@/common/js/common";
 import {ripple} from "@/common/js/ripple";
+import TWEEN from "tween.js";
 
 export default {
 	props: {
@@ -51,8 +54,14 @@ export default {
 	data() {
 		return {
 			isFah: queryData('isFah') || false,
-			show: false
-		}
+			show: false,
+			number: 0,
+			currentTemp: 0,
+    		animatedNumber: 0,
+    	}
+	},
+	created() {
+		// console.log(this.animatedNumber)
 	},
 	computed: {
 		// 今天的最高温和最低温
@@ -89,21 +98,30 @@ export default {
 		 	obj.dir = this.cityWeather.forecast[0].fengxiang;
 
 		 	return obj;
-		},
-		currentTemp() {
-			if (this.isFah) {
-
-				return this.cityWeather.wendu * 9 / 5 + 32;
-			}
-
-			return this.cityWeather.wendu;
-		},
-
+		}
 	},
 	watch: {
-		'isFah' (){
-				addData('isFah', this.isFah);
-				this.$root.eventHub.$emit('aw.is.Fahrenheit', queryData('isFah'));
+		isFah() {
+			  addData('isFah', this.isFah);
+			  this.$root.eventHub.$emit('aw.is.Fahrenheit', queryData('isFah'));
+
+			if (this.isFah) this.currentTemp = this.cityWeather.wendu * 9 / 5 + 32 ;
+			else this.currentTemp = Number(this.cityWeather.wendu);
+		},
+		currentTemp(newValue, oldValue) {
+	      var vm = this;
+	      function animate (time) {
+	        requestAnimationFrame(animate);
+	        TWEEN.update(time);
+	      }
+	      new TWEEN.Tween({ tweeningNumber: oldValue })
+	        .easing(TWEEN.Easing.Quadratic.Out)
+	        .to({ tweeningNumber: newValue }, 500)
+	        .onUpdate(function () {
+	          vm.animatedNumber = this.tweeningNumber.toFixed(0)
+	        })
+	        .start();
+	      	animate();
 		}
 	},
 	methods: {

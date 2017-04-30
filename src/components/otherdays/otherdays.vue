@@ -93,12 +93,12 @@ export default {
     mounted() {
         const that = this;
         // 检测屏幕尺寸变化，让svg曲线响应,可能会有些卡顿。
-        /*window.onresize = () => {
+        window.onresize = () => {
             return (() => {
                 window.screenWidth = document.body.clientWidth;
                 that.screenWidth = window.screenWidth;
             })();
-        }*/
+        }
     },
     methods: {
         rippleAction(e, index) {
