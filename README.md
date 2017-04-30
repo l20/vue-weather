@@ -101,7 +101,7 @@ npm run build
 
 #### 城市列表选择设置
 
-![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/homeoperation.gif)
+![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/citylistset.gif)
 
 
 
