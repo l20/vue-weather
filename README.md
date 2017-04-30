@@ -86,22 +86,22 @@ npm run build
 
 #### 主界面
 
-![home](https://github.com/alanWongsGithub/vue-weather/tree/master/screen/home.gif)
+![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/home.gif)
 
 #### 界面功能
 
-![home](https://github.com/alanWongsGithub/vue-weather/tree/master/screen/homeoperation.gif)
+![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/homeoperation.gif)
 
 
 
 #### 城市列表
 
-![home](https://github.com/alanWongsGithub/vue-weather/tree/master/screen/citylist.gif)
+![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/citylist.gif)
 
 
 #### 城市列表选择设置
 
-![home](https://github.com/alanWongsGithub/vue-weather/tree/master/screen/homeoperation.gif)
+![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/homeoperation.gif)
 
 
 
