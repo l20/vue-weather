@@ -14,7 +14,7 @@
 * vue-router
 * webpack
 * ES6/7
-* Axio
+* Axios
 * less
 * linq.js
 * svg
