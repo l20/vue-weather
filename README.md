@@ -26,7 +26,7 @@
 ### 安装
 
 ```
-git clone https://github.com/
+git clone https://github.com/alanWongsGithub/vue-weather.git
 
 cd weather/
 
@@ -44,10 +44,7 @@ npm run dev
 ```
 npm run build
 
-生成的elm文件夹放在服务器即可正常访问
 ```
-
-
 
 
 # 然后
@@ -92,12 +89,9 @@ npm run build
 
 ![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/homeoperation.gif)
 
-
-
 #### 城市列表
 
 ![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/citylist.gif)
-
 
 #### 城市列表选择设置
 
