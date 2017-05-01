@@ -8,7 +8,7 @@ import * as com from "@/common/js/common";
  * @return object  返回promise对象
  */
 var getCurrentPositionByIP = () => {
-    let url = '/location/ip?ak=mNc918xjLC42KNsNmn6GGDDLtssZL4zq';
+    let url = '/location/ip?ak=yourAk';
     return Axios.get(url);     //使用百度定位API,使用时将注释去掉，自己申请百度AK
 }
 
