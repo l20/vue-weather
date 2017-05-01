@@ -20,7 +20,7 @@
           <ul class="aw-letter-classify">
               <li v-for="(value, key, index) in sortgroupcity" :key="key"  class="aw-letter-classify-li">
                   <h4 class="aw-city-title"  @click.stop="showCity(index, $event)">{{key}}
-                      <span v-if="index == 0">（按字查找）</span>
+                      <span v-if="index == 0">（按字母查找）</span>
                   </h4>
                   <transition name="fade">
                     <ul class="aw-city-name-container city-list-ul clearfix " v-show="current == index">
