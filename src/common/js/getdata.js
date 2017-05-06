@@ -9,7 +9,23 @@ import * as com from "@/common/js/common";
  */
 var getCurrentPositionByIP = () => {
     let url = '/location/ip?ak=yourAk';
-    return Axios.get(url);     //使用百度定位API,使用时将注释去掉，自己申请百度AK
+    return Axios.get(url); //使用百度定位API,使用时将注释去掉，自己申请百度AK
+}
+
+/**
+ * IP定位请求模拟函数
+ * 当没有百度IP定位AK时候，可使用此函数模拟
+ *
+ * @return promise 
+ */
+var getCurtCity = () => {
+
+    // 这里是模拟的百度IP定位API返回的JSON数据，城市为北京
+    let city = {"data":{ "address": "CN|\u5317\u4eac|\u5317\u4eac|None|UNICOM|0|0", "content": { "address_detail": { "province": "\u5317\u4eac\u5e02", "city": "\u5317\u4eac\u5e02", "district": "", "street": "", "street_number": "", "city_code": 131 }, "address": "\u5317\u4eac\u5e02", "point": { "y": "4825907.72", "x": "12958160.97" } }, "status": 0 }}
+
+    return new Promise((resolve, reject) => {
+        resolve(city);
+    });
 }
 
 /**
@@ -79,7 +95,8 @@ var getWeatherInfo = (cityName) => {
 
     return new Promise((resolve, reject) => {
         // 等两个函都获取到数据
-        Axios.all([getAllCity(), getCurrentPositionByIP()])
+        // 这里若使用百度IP定位API可以将 getCurtCity（）函数换成 getCurrentPositionByIP（）
+        Axios.all([getAllCity(), getCurtCity()])
             .then(Axios.spread(function(city, position) {
 
                 let citys = city.data.data;
