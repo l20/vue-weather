@@ -21,6 +21,8 @@ import citylist from "@/components/citylist/citylist";
 import otherdays from "@/components/otherdays/otherdays";
 import {weatherType2Icon} from "@/common/js/weathertype2icon";
 
+const TIME = 3600 * 1000;
+
   export default {
     name: 'app',
     data() {
@@ -31,6 +33,8 @@ import {weatherType2Icon} from "@/common/js/weathertype2icon";
     },
     mounted() {
       this.getData();
+    // 每小时更新一次
+      setInterval(this.getData, TIME);
     },
     watch: {  
       // 监测路由参数
