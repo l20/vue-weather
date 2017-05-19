@@ -175,5 +175,12 @@ var clearData = () => {
     storage.clear();
 }
 
+var isEmptyObject = (e) => {  
+    var t;  
+    for (t in e)  
+        return !1;  
+    return !0  
+}  
 
-export {formatDate, extend, quickSort, getSVGPathByCoordinate, addData, delDate, upDateData, queryData, clearData};
+
+export {formatDate, extend, quickSort, getSVGPathByCoordinate, addData, delDate, upDateData, queryData, clearData, isEmptyObject};

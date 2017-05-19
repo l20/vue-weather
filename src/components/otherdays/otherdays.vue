@@ -3,7 +3,7 @@
     <transition name="fade">
         <forecast24h v-if="show" class="aw-forecast24h" :isFah="isFah"></forecast24h>
     </transition>
-	<div id="chart-6d" class="chart aw-weather-chart">
+	<div id="chart-6d" class="chart aw-weather-chart" v-if="allWeatherInfo.length > 0">
             <div class="canvas c-row">
                  <svg version="1.2" baseProfile="tiny">
                     <path class="path1" stroke="#e9e9e9" stroke-width="1" stroke-opacity="0.7" fill="none" :d="path1"></path>
@@ -130,7 +130,7 @@ export default {
     computed: {
         allWeatherInfo() {
 
-            if (!this.cityWeather.yesterday || !this.cityWeather.forecast) return ;
+            if (!this.cityWeather.yesterday || !this.cityWeather.forecast) return [] ;
 
             // 拷贝对象修改
             let yesterday = [], otherdays = [];

@@ -1,7 +1,7 @@
 <template>
     	<section class="jumbotron">
 		    <div class="aw-weather-head">
-			    <div class="aw-weather-maininfo">
+			    <div class="aw-weather-maininfo" v-if="windInfo">
 			        <p class="temp-line">
 			        	<span class="aw-weather-currentTemp">
 			        		<span>{{animatedNumber || (!isFah ? cityWeather.wendu : cityWeather.wendu* 9 / 5 + 32)}}</span><span class="aw-weather-current-unit">{{isFah ? '℉' : '℃'}}</span>
@@ -213,6 +213,9 @@ export default {
 						}
 						.cloudy2sunny{
 							.icon-position(18px, -110px);
+						}
+						.sandstorm{
+							.icon-position(40px, -98px);
 						}
 					}
     			}

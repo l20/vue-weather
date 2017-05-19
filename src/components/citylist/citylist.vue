@@ -7,7 +7,7 @@
           <span class="aw-icon-style icon-search"></span><input placeholder="输入城市名检索" @keyup.enter="queryCity"  @focus="maskIsShow = true"  type="text" class="search-query "  v-model="filterKey">
         </form>
       </div>
-      <section class="aw-city-container">
+      <section class="aw-city-container" v-if="!isEmpty(cityWeather)">
           <p class="aw-set-prompt">定位不准确时可手动设置当前城市天气。</p>
           <div class="aw-current-city c-row">
             <h4 class="aw-city-title c-span4" >当前城市</h4>
@@ -47,10 +47,10 @@
 <script type="text/ecmascript-6">
 import {ripple} from "@/common/js/ripple";
 import * as com from "@/common/js/getdata";
-import {queryData} from "@/common/js/common";
+import {queryData,isEmptyObject} from "@/common/js/common";
 import {Enumerable} from "@/common/js/linq.min";
 import {weatherType2IconSm} from "@/common/js/weathertype2icon";
-    
+
 export default {
       props: {
         cityWeather: {
@@ -135,6 +135,9 @@ export default {
         },
         calcuFah(temp) {
             return temp * 9 / 5 + 32;
+        },
+        isEmpty(o) { //判断对象是否为空
+          isEmptyObject(o);
         }
       },
       created() {
@@ -244,13 +247,13 @@ export default {
           // box-shadow:  1px 1px 0px hsla(0, 0%, 100%, .8);
 
         }
-        // &::-moz-input-placeholder, 
+        // &::-moz-input-placeholder,
         // &::-ms-input-placeholder,
         &::-webkit-input-placeholder{
           color: hsla(0, 0%, 100%, .7);
           line-height: 18px;
         }
-    } 
+    }
 
 
     table {
@@ -452,10 +455,10 @@ export default {
    // 清除浮动
   .clearfix{ /*兼容 IE*/zoom: 1;}
   .clearfix:after{content: '';display: block;clear: both; height: 0;visibility: hidden;}
-    
-  .aw-city-container .ellipsis .ripple, 
-  .aw-city-container .aw-city-name-container .ripple, 
-  .aw-seach-result .aw-seach-ul li .ripple{ 
+
+  .aw-city-container .ellipsis .ripple,
+  .aw-city-container .aw-city-name-container .ripple,
+  .aw-seach-result .aw-seach-ul li .ripple{
     background: rgba(225, 225, 225, 0.8)!important;
   }
 </style>
