@@ -59,7 +59,7 @@ forever start server.js
 
 ```
 
-### [在线演示](http://weather.alanwong.tech?_blank)
+<a href="http://weather.alanwong.tech?_blank" target="_blank">在线演示</a>
 
 # 然后
 
