@@ -36,7 +36,7 @@ const TIME = 3600 * 1000;
     // 每小时更新一次
       setInterval(this.getData, TIME);
     },
-    watch: {  
+    watch: {
       // 监测路由参数
       '$route' () {
         this.cityName = this.$route.params.name;
@@ -54,7 +54,7 @@ const TIME = 3600 * 1000;
       getData(cityName) {
         const that = this;
         if (com.queryData('currentCity')) {
-          if (!!cityName && com.queryData('currentCity').name != cityName) com.addData('currentCity', {name: cityName}); 
+          if (!!cityName && com.queryData('currentCity').name != cityName) com.addData('currentCity', {name: cityName});
           getWeatherInfo(com.queryData('currentCity').name).then(data => {
             that.cityWeather = data;
           });
@@ -87,6 +87,7 @@ const TIME = 3600 * 1000;
       position: fixed;
       flex-direction: column;
       box-sizing: border-box; */
+      background-color: rgba(62, 126, 191, 0.9);
       background-image: -webkit-linear-gradient(top, #3e7ebf, #6ec2ff);
 
         margin: 0;
@@ -98,6 +99,6 @@ const TIME = 3600 * 1000;
         box-sizing: border-box;
     }
   }
-  
+
   }
 </style>

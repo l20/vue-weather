@@ -75,7 +75,7 @@ export default {
 
 			// 获取对象的所有键和值
 			[this.colorLv, this.AQIDecLv] = Object.entries(AQILvs)[AQILvIdx];
-        	
+
 			// 获取当前日期、时间戳
 			let date = new Date(Date.parse(new Date()));
         	this.updataTime = formatDate(date, 'yyyy-MM-dd|hh:mm').split('|')[1];
@@ -118,7 +118,7 @@ export default {
 	    background-color: rgba(62, 126, 191, .6);
 	    box-shadow: 0 2px 2px rgba(0,0,0,.1);
 	    color: #fff;
-		
+		height: 1.1rem;
 		position: fixed;
 	    z-index: 11;
 	    top: 0;
@@ -148,7 +148,7 @@ export default {
 		    	font-size: 13px;
 		    }
 		    .bounce-transition {
-			 
+
 			}
 			.bounce-enter-active, .bounce-leave-active {
 			  transition: all 1s;
@@ -175,7 +175,7 @@ export default {
 			    font-size: .13rem;
 			    color: hsla(0,0%,100%,.5);
 			    text-shadow: 1px 1px 0 rgba(0,0,0,.3);
-			    margin-right: 10px;	
+			    margin-right: 10px;
 		    }
 		    .city-picker-toggle{
 		    	text-align: right;

@@ -1,7 +1,7 @@
 <template>
     	<section class="jumbotron">
 		    <div class="aw-weather-head">
-			    <div class="aw-weather-maininfo" v-if="windInfo">
+          <div class="aw-weather-maininfo" v-if="windInfo">
 			        <p class="temp-line">
 			        	<span class="aw-weather-currentTemp">
 			        		<span>{{animatedNumber || (!isFah ? cityWeather.wendu : cityWeather.wendu* 9 / 5 + 32)}}</span><span class="aw-weather-current-unit">{{isFah ? '℉' : '℃'}}</span>
@@ -29,7 +29,7 @@
 			        <div class="aw-weather-prompt">
 			            <span class="aw-weather-prompt-text">{{cityWeather.ganmao}}</span>
 			        </div>
-			        <div class="aw-weather-abs"> 
+			        <div class="aw-weather-abs">
 			            <div class="btn-24h-toggle c-gap-right" @click="rippleAction($event)"  ref="btn24htoggle"> 24小时 <span class="aw-weather-24-span">预报</span> <span class="c-gap-left-small" :class="[show ? 'icon-circle-up' : 'icon-circle-down']" ></span></div>
 			        </div>
 			    </div>
@@ -92,7 +92,7 @@ export default {
 		},
 		// 风向风力
 		windInfo() {
-			if (!this.cityWeather.forecast) return;
+			if (!this.cityWeather.forecast) return false;
 			let obj = {};
 		 	obj.lv = this.cityWeather.forecast[0].fengli;
 		 	obj.dir = this.cityWeather.forecast[0].fengxiang;
@@ -145,7 +145,7 @@ export default {
 	@shadow-1_5: 1.5px 1.5px 0 rgba(0,0,0,.23);
 	@shadow-1: 1px 1px 0 rgba(0,0,0,.23);
 	@duration: .3s;
-	.icon-position (@left: 68px, @top: -98px) {	
+	.icon-position (@left: 68px, @top: -98px) {
 		left: @left;
 		top: @top;
 	}
@@ -247,11 +247,11 @@ export default {
 					    height: 100%;
 					    position: relative;
 					    // background: #1F2736;
-					    background: linear-gradient(rgba(225, 225, 225, .8), rgba(225, 225, 225, .6)); 
+					    background: linear-gradient(rgba(225, 225, 225, .8), rgba(225, 225, 225, .6));
 					    border-radius: 30px 30px 30px 30px;
 					    box-shadow: inset 0 3px 8px 1px rgba(0,0,0,0.2), inset 0 1px 0 rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.2);
 					    // border: 1px solid rgba(0, 0, 0, .1);
-					    transition: all @duration ease; 
+					    transition: all @duration ease;
 					    i {
 					    	display: block;
 						    height: .2rem;
@@ -301,7 +301,7 @@ export default {
 					    // background: gradient-gradient(#ffffff, #77a1b9);
 					    color: rgba(185, 231, 253, 0.3);
 					    // box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 10px rgba(100, 231, 253, 1), inset 0 0 8px rgba( 61, 157, 247, 0.8), inset 0 -2px 5px rgba(185, 231, 253, 0.3), inset 0 -3px 8px rgba(185, 231, 253, 0.5);
-					} 
+					}
 					input:checked ~  .icon-Fahrenheit {
 					    color: #fff;
 					}

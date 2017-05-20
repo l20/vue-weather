@@ -7,7 +7,7 @@
           <span class="aw-icon-style icon-search"></span><input placeholder="输入城市名检索" @keyup.enter="queryCity"  @focus="maskIsShow = true"  type="text" class="search-query "  v-model="filterKey">
         </form>
       </div>
-      <section class="aw-city-container" v-if="!isEmpty(cityWeather)">
+      <section class="aw-city-container" v-if="!!cityWeather.forecast">
           <p class="aw-set-prompt">定位不准确时可手动设置当前城市天气。</p>
           <div class="aw-current-city c-row">
             <h4 class="aw-city-title c-span4" >当前城市</h4>

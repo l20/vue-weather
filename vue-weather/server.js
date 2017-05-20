@@ -41,15 +41,22 @@ app.use('/api', apiRoutes);
 // --------------------路由代码结束
 
 // default port where dev server listens for incoming traffic
-var port =  9000;
+var port =  8080;
 
 // 反向代理列表
 var proxyTable = {
-        '/location': 'https://api.map.baidu.com',
-        '/weather_mini' : 'http://wthrcdn.etouch.cn',
-        '/v1' : 'https://mainsite-restapi.ele.me',
+        // '/location': 'https://api.map.baidu.com',
+        // '/weather_mini' : 'http://wthrcdn.etouch.cn',
+        // '/v1' : 'https://mainsite-restapi.ele.me',
   };
 
+/*
+var proxyTable = {
+        '/v1' : 'https://localhost',
+        '/location': 'http://localhost',
+        '/weather_mini' : 'http://localhost',
+  };
+*/
 // proxy api requests
 Object.keys(proxyTable).forEach(function (context) {
   var options = proxyTable[context]

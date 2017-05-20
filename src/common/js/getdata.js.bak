@@ -2,13 +2,30 @@ import Axios from 'axios';
 import * as com from "@/common/js/common";
 
 /**
- * IP定位API获取当前大致所在城市
+ * 反向代理百度IP定位API获取当前大致所在城市
+ * url示例：http://api.map.baidu.com/location/ip?ak=请输入您的AK&coor=bd09ll
+ * coor参数可选，aK必须向百度申请。
  * @return object  返回promise对象
  */
 var getCurrentPositionByIP = () => {
-    // let url = 'http://ip.chinaz.com/getip.aspx';
-    let url = 'https://bird.ioliu.cn/ip';
+    let url = '/location/ip?ak=mNc918xjLC42KNsNmn6GGDDLtssZL4zq';
     return Axios.get(url); //使用百度定位API,使用时将注释去掉，自己申请百度AK
+}
+
+/**
+ * IP定位请求模拟函数
+ * 当没有百度IP定位AK时候，可使用此函数模拟
+ *
+ * @return promise
+ */
+var getCurtCity = () => {
+
+    // 这里是模拟的百度IP定位API返回的JSON数据，城市为北京
+    let city = {"data":{ "address": "CN|\u5317\u4eac|\u5317\u4eac|None|UNICOM|0|0", "content": { "address_detail": { "province": "\u5317\u4eac\u5e02", "city": "\u5317\u4eac\u5e02", "district": "", "street": "", "street_number": "", "city_code": 131 }, "address": "\u5317\u4eac\u5e02", "point": { "y": "4825907.72", "x": "12958160.97" } }, "status": 0 }}
+
+    return new Promise((resolve, reject) => {
+        resolve(city);
+    });
 }
 
 /**
@@ -30,7 +47,7 @@ var getAllCityInfo = (key) => {
         });
     } else {
         return new Promise(resolve => {
-            Axios.get('https://mainsite-restapi.ele.me/v1/cities?type=group').then(res => {
+            Axios.get('/v1/cities?type=group').then(res => {
                 com.addData(key, res.data)
                 resolve(res.data);
             });
@@ -49,7 +66,7 @@ var getHotCityInfo = (key) => {
         });
     } else {
         return new Promise(resolve => {
-            Axios.get('https://mainsite-restapi.ele.me/v1/cities?type=hot').then(res => {
+            Axios.get('/v1/cities?type=hot').then(res => {
                 com.addData(key, res.data)
                 resolve(res.data);
             });
@@ -64,7 +81,7 @@ var getHotCityInfo = (key) => {
  */
 var getWeatherByCityCode = (code) => {
     // let URL = "/WeatherApi?citykey=101010100";
-    let URL = "http://wthrcdn.etouch.cn/weather_mini?citykey=" + code;
+    let URL = "/weather_mini?citykey=" + code;
     return Axios.get(URL);
 }
 
@@ -78,13 +95,14 @@ var getWeatherInfo = (cityName) => {
 
     return new Promise((resolve, reject) => {
         // 等两个函都获取到数据
+        // 这里若使用百度IP定位API可以将 getCurtCity（）函数换成 getCurrentPositionByIP（）
+        // Axios.all([getAllCity(), getCurtCity()])
         Axios.all([getAllCity(), getCurrentPositionByIP()])
             .then(Axios.spread(function(city, position) {
 
                 let citys = city.data.data;
-                // let cityNamesByIp = position.data.address || position.data.data.address;
-                // let cityNameByIp = cityName || cityNamesByIp.split('|')[2];
-                let cityNameByIp = cityName || position.data.data.area;
+                let cityNamesByIp = position.data.address || position.data.data.address;
+                let cityNameByIp = cityName || cityNamesByIp.split('|')[2];
                 let weatherData = '';
                 // 遍历城市json对象获取城市代码
                 citys.zone.forEach(province => {
