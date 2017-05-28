@@ -25,19 +25,20 @@
       '$route' () {
         const self = this;
         self.loadingShow = true;
-        this.timer = setInterval(() => {
+        this.timer = setTimeout(() => {
           self.loadingShow = false;
+          clearTimeout(this.timer);
         }, 1200)
       }
     },
     mounted() {
       const self = this;
-      this.timer = setInterval(() => {
+      this.timer = setTimeout(() => {
         self.loadingShow = false;
       }, 1200)
     },
     beforeDestroy(){
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
     },
   }
 </script>
