@@ -4,7 +4,7 @@
           <div class="aw-weather-maininfo" v-if="windInfo">
 			        <p class="temp-line">
 			        	<span class="aw-weather-currentTemp">
-			        		<span>{{animatedNumber || (!isFah ? cityWeather.wendu : cityWeather.wendu* 9 / 5 + 32)}}</span><span class="aw-weather-current-unit">{{isFah ? '℉' : '℃'}}</span>
+			        		<span class="aw-current-temp">{{animatedNumber || (!isFah ? cityWeather.wendu : cityWeather.wendu* 9 / 5 + 32)}}</span><span class="aw-weather-current-unit">{{isFah ? '℉' : '℃'}}</span>
 			        	</span>
 			            <span class="aw-weather-animate-icon">
 			            	<span :class="classType"></span>
@@ -116,7 +116,7 @@ export default {
 	      }
 	      new TWEEN.Tween({ tweeningNumber: oldValue })
 	        .easing(TWEEN.Easing.Quadratic.Out)
-	        .to({ tweeningNumber: newValue }, 500)
+	        .to({ tweeningNumber: newValue }, 1000)
 	        .onUpdate(function () {
 	          vm.animatedNumber = this.tweeningNumber.toFixed(0)
 	        })
@@ -167,9 +167,15 @@ export default {
 		    			left: .02rem;
 					    font-size: .85rem;
 					    bottom: .02rem;
-					    font-family: 'HelveticaNeue-Thin';
+              font-family: 'HelveticaNeue-Thin';
+              .aw-current-temp{
+                font-family:  Ostrich Sans ;
+                font-size: 1rem;
+                letter-spacing: .07rem;
+              }
 					    .aw-weather-current-unit{
 					    	text-shadow: @shadow-1;
+                font-family:  Ostrich Sans ;
 					    	position: absolute;
 						    top: 20px;
 						    font-size: .2rem;

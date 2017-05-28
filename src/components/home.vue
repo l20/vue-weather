@@ -8,6 +8,7 @@
       </div>
     </div>
    <citylist :cityWeather="cityWeather"></citylist>
+   <loading></loading>
   </div>
 </template>
 <script>
@@ -16,6 +17,7 @@ import Axios from 'axios';
 import * as com from "@/common/js/common";
 import today from "@/components/today/today";
 import wheader from "@/components/header/header";
+import loading from "@/components/loading/loading";
 import {getWeatherInfo} from "@/common/js/getdata";
 import citylist from "@/components/citylist/citylist";
 import otherdays from "@/components/otherdays/otherdays";
@@ -46,6 +48,7 @@ const TIME = 3600 * 1000;
     components: {
       today,
       wheader,
+      loading,
       citylist,
       otherdays,
     },
@@ -65,7 +68,8 @@ const TIME = 3600 * 1000;
             });
         }
 
-      }
+      },
+
     }
   }
 </script>
