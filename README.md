@@ -96,9 +96,8 @@ forever start server.js
 #### 主界面
 
 ![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/home.gif)
-![home](https://github.com/alanWongsGithub/vue-weather/blob/master/screen/home.gif)
 
-<img src="https://img.alicdn.com/imgextra/i4/690341282/TB2PwL0rm0jpuFjy0FlXXc0bpXa_!!690341282.gif" alt=" seller.gif"/>
+![loading](https://img.alicdn.com/imgextra/i4/690341282/TB2PwL0rm0jpuFjy0FlXXc0bpXa_!!690341282.gif)
 
 #### 界面功能
 

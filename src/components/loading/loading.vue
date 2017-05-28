@@ -27,14 +27,14 @@
         self.loadingShow = true;
         this.timer = setInterval(() => {
           self.loadingShow = false;
-        }, 600)
+        }, 1200)
       }
     },
     mounted() {
       const self = this;
       this.timer = setInterval(() => {
         self.loadingShow = false;
-      }, 600)
+      }, 1200)
     },
     beforeDestroy(){
       clearInterval(this.timer);
