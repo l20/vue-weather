@@ -11,7 +11,7 @@
    <loading></loading>
   </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
 
 import Axios from 'axios';
 import * as com from "@/common/js/common";

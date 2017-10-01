@@ -1,3 +1,4 @@
+var http = require('http');
 require('./check-versions')()
 
 var config = require('../config')
@@ -32,7 +33,27 @@ apiRoutes.get('/forecast24', function (req, res) {
     data: forcast24
   });
 });
+// ip接口
+apiRoutes.get('/ip', function(req, response) {
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (process.env.NODE_ENV) {
+      ip = '125.33.71.137';
+    }
+    http.get('http://ip.taobao.com/service/getIpInfo.php?ip=' + ip, function(res) {
+        res.on('data', function(d) {
+            // console.error(d);
+            response.json({
+                errno: 0,
+                data: d.toString('ascii')
+            });
+            // process.stdout.write(d);
+        });
 
+    }).on('error', function(e) {
+        console.error(e);
+    });
+
+});
 app.use('/api', apiRoutes);
 
 // --------------------路由代码结束

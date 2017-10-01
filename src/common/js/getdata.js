@@ -6,10 +6,27 @@ import * as com from "@/common/js/common";
  * @return object  返回promise对象
  */
 var getCurrentPositionByIP = () => {
-    // let url = 'http://ip.chinaz.com/getip.aspx';
-    let url = 'https://bird.ioliu.cn/ip';
-    return Axios.get(url); //使用百度定位API,使用时将注释去掉，自己申请百度AK
+    const url = '/api/ip';
+    return new Promise((resolve, reject) => {
+
+        Axios.get(url).then(res => {
+            res = res.data.data || res.data
+            resolve(JSON.parse(res));
+        });
+    });
 }
+
+/*var getCurrentPositionByIPReqwest = () => {
+    let url = '/ip';
+    return reqwest({
+        url: url,
+        contentType: 'application/json',
+        crossOrigin: true,
+        withCredentials: true,
+        type: 'jsonp',
+        jsonpCallback: 'foo'
+    });
+}*/
 
 /**
  * 获取全国所有县级、市、区json对象
@@ -80,11 +97,11 @@ var getWeatherInfo = (cityName) => {
         // 等两个函都获取到数据
         Axios.all([getAllCity(), getCurrentPositionByIP()])
             .then(Axios.spread(function(city, position) {
-
                 let citys = city.data.data;
                 // let cityNamesByIp = position.data.address || position.data.data.address;
                 // let cityNameByIp = cityName || cityNamesByIp.split('|')[2];
-                let cityNameByIp = cityName || position.data.data.area;
+                // let cityNameByIp = cityName || position.data.data.area;
+                let cityNameByIp = cityName || position.data.city || position.city;
                 let weatherData = '';
                 // 遍历城市json对象获取城市代码
                 citys.zone.forEach(province => {

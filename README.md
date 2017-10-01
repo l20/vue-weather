@@ -45,6 +45,10 @@ npm run dev
 ```
 npm run build
 
+将huild之后的vue-weather/目录上传至服务器
+
+cd vue-weather/
+
 //用node启动:
 
 node server.js
@@ -59,20 +63,15 @@ forever start server.js
 
 ```
 
-### [在线演示](http://weather.alanwong.tech)
+### [在线演示](http://weather.alphagoo.cn)
 
 # 然后
 
 > 本项目用于刚上手vue 2.0文档想找项目尝尝鲜的coder。
 
-> 由于本人也刚接触vue所以在您看来可能代码写的有些乱，将就着看吧。
-
 > 由于使用的免费天气API数据过于简单，导致某些功能只能自己实现或者未开发，比如日落日出时间，当然也可以计算自己实现，稍复杂。
 
-> 国际惯例，您觉得还可以就 star一下吧，让我更有动力学习。
-
 >  开发环境为 windows 7 Chrome 57 node 6.10.1。
-
 
 
 # 实现功能

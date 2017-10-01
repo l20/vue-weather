@@ -23,7 +23,7 @@
 			            <div class="aw-weather-wind c-line-clamp1">
 				            <span>今天：</span> <span class="aw-weather-temp-range c-gap-right">{{temperatureScope}}</span>
 				            <span class="aw-weather-wind-dir">{{windInfo.dir || '未知'}}</span>
-				            <span>{{windInfo.lv || '未知'}}</span>
+                    <span>{{windInfo.lv.replace(/^\<!\[CDATA\[/g,'').replace(/\]\]\>/g,'') || '未知'}}</span>
 			        	</div>
 			        </div>
 			        <div class="aw-weather-prompt">
@@ -48,7 +48,7 @@ export default {
 	props: {
 		cityWeather: {
 			type: Object,
-            default: function () { return {};}
+      default: function () { return {};}
 		}
 	},
 	data() {

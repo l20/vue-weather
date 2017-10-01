@@ -13,7 +13,7 @@
                     <path class="path4" stroke="#fff" stroke-width="1" stroke-opacity="0.15" fill="none" :d="path4"></path>
                     <circle :cx="allWeatherInfo[1].x" :cy="allWeatherInfo[1].yl" r="2.5" fill="#fff"></circle>
                     <path class="path5" stroke-dasharray="4,4" stroke="#fff" stroke-width="1" fill="none" :d="path5" />
-                </svg> 
+                </svg>
                 <div class="c-span2 weather-bar" v-for="(value, index) in allWeatherInfo" :class="{active:current == index}"  @click.stop="rippleAction($event, index)">
                     <div class="content">
                         <div class="title c-gap-bottom" :class="{dim:index == 0}"><span class="value">{{value.date}}</span>
@@ -23,7 +23,7 @@
                             <div class="pillar"><span class="pillar-max" :style="{top:calculateTxtHTop(value.yh, index)}" :class="{dim:index == 0}">{{isFah ? calcuFah(value.high)+'℉' : value.high+'℃'}}</span><span class="pillar-min" :style="{top:calculateTxtLTop(value.yl)}" :class="{dim:index == 0}">{{isFah ? calcuFah(value.low)+'℉' : value.low+'℃'}}</span></div>
                         </div>
                         <div class="c-gap-top-large wind" :class="{dim:index == 0}"><span>{{value.fengxiang}}</span>
-                            <div>{{value.fengli}}</div>
+                            <div>{{value.fengli.replace(/^\<!\[CDATA\[/g,'').replace(/\]\]\>/g,'')}}</div>
                         </div>
                     </div>
                 </div>
@@ -68,13 +68,13 @@ export default {
             path4: '',      // 曲线4
             path5: '',      // 虚线
             isFah: queryData('isFah') || false,   // 华氏温度
-            screenWidth: document.body.clientWidth  //获取视口宽度，计算svg曲线。使用onresize事件可随窗口变化响应            
+            screenWidth: document.body.clientWidth  //获取视口宽度，计算svg曲线。使用onresize事件可随窗口变化响应
         }
     },
-     watch: {  
+     watch: {
       'cityWeather' () {
         this.current = 1;
-      }, 
+      },
       deep: true
     },
     created() {
@@ -87,7 +87,7 @@ export default {
             this.isFah = msg;
         });
         if (!queryData('isFah')) addData('isFah', this.isFah);
-        
+
         this.isFah = queryData('isFah');
     },
     mounted() {
@@ -158,7 +158,7 @@ export default {
             let yH = [], yL = [];
 
             // 提取数字
-            for (let i = 0; i < newO.length; i++) {  
+            for (let i = 0; i < newO.length; i++) {
                 yH[i] = parseInt(newO[i].high.match(/-?[1-9](?:\d{0,2})(?:,\d{3})*|0/)[0]);
                 yL[i] = parseInt(newO[i].low.match(/-?[1-9](?:\d{0,2})(?:,\d{3})*|0/)[0]);
             }
@@ -172,7 +172,7 @@ export default {
                 if (ratioH == '-Infinity' || ratioH == 'Infinity') ratioH = 0;    
                 if (ratioL == '-Infinity' || ratioL == 'Infinity') ratioL = 0;
                  
-            // 系数过大显示不正常情况下，统一使用同一系数,保证最高温或最低温位置置于顶部、底部  
+            // 系数过大显示不正常情况下，统一使用同一系数,保证最高温或最低温位置置于顶部、底部
             let offsetHY = OFFSET_H_Y, offsetLY = OFFSET_L_Y;
 
             if ((HEIGHT - max * ratioH - OFFSET_H_Y).toFixed(2) != BREAKPOINT_H) { // 最高温曲线显示不正常取最低温曲线系数
@@ -181,13 +181,13 @@ export default {
             }
             if ((HEIGHT - min * ratioL - OFFSET_L_Y).toFixed(2) != BREAKPOINT_L) { // 最低温曲线显示不正常取最高温曲线系数
                 ratioL = ratioH;
-                offsetLY = HEIGHT - BREAKPOINT_L - min * ratioL; 
+                offsetLY = HEIGHT - BREAKPOINT_L - min * ratioL;
             }
             // 采用跟最高温一样的系数，也可以不用
             ratioL =  ratioH;
 
             // 计算，并将计算结果放入源数组对象中
-            for (let i = 0, left = offsetX; i < newO.length; i++) {  
+            for (let i = 0, left = offsetX; i < newO.length; i++) {
                  path1[i] = {};path2[i] = {};
 
                 // 日期转换
@@ -209,7 +209,7 @@ export default {
 
                 left += offsetX*2;
             }
-            
+
             // 绘制四条三次贝塞尔曲线
             this.path1 = getSVGPathByCoordinate(path1.slice(1));
             this.path2 = getSVGPathByCoordinate(path2.slice(1));
@@ -233,7 +233,7 @@ export default {
    background-color: hsla(0,0%,100%,.08);
    flex-grow: 1;
    display: flex;
-   flex-direction: column; 
+   flex-direction: column;
    overflow-y: auto;
    .aw-forecast24h{
         transition: opacity 0.7s;
@@ -260,10 +260,10 @@ export default {
               stroke-dasharray: 1000;
               stroke-dashoffset: 1000;
               animation: dash 10s linear 0s infinite;
-                
+
             }
             @-webkit-keyframes dash {
-              to {  
+              to {
                 stroke-dashoffset: 0;
               }
             }

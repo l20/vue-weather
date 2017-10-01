@@ -12,7 +12,9 @@
 
   </div>
 </template>
-<script>
+
+<script type="text/ecmascript-6">
+
   export default {
     data() {
       return {
@@ -23,23 +25,22 @@
     },
     watch: {
       '$route' () {
-        const self = this;
-        self.loadingShow = true;
+        this.loadingShow = true;
         this.timer = setTimeout(() => {
-          self.loadingShow = false;
+          this.loadingShow = false;
           clearTimeout(this.timer);
         }, 1200)
       }
     },
     mounted() {
-      const self = this;
       this.timer = setTimeout(() => {
-        self.loadingShow = false;
+        this.loadingShow = false;
       }, 1200)
     },
     beforeDestroy(){
       clearTimeout(this.timer);
     },
+
   }
 </script>
 
@@ -47,9 +48,9 @@
   @bgColor: rgba(116, 181, 247, .97);
   .loading{
     top: 0;
-   right: 0;
-   bottom: 0;
-   left: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: @bgColor;

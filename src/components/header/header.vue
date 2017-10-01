@@ -126,7 +126,7 @@ export default {
 	    right: 0;
 	    .aw-weather-pollution-area{
 	    	display: inline-block;
-		    width: 93px;
+		    width: 100px;
 		    text-align: center;
 		    background: hsla(0,0%,100%,.08);
 		    border-radius: 3px;
@@ -140,7 +140,8 @@ export default {
 		    border-radius: 3px;
 		    line-height: 21px;
 		    font-size: 12px;
-		    width: 83px;
+		    width: 100%;
+        padding: 12px 5px;
 	    	-webkit-transition: all 1.2s linear; /* For Safari 3.1 to 6.0 */
     		transition: all 1.2s linear;
     		text-shadow: 1px 1px 1px rgba(0,0,0,.6);

@@ -7,7 +7,7 @@
                 <div class="c-row">
                     <div class="c-span3 border">
                         <p class="c-line-clamp1 dim"><span class="c-gap-right-small weather-icons icon-compass" :style="{transform:calcuWindDir(value.fengxiang),fontSize:value.fengxiang == '无持续风向' ? 0 : ''}"></span> 风力 </p>
-                        <p class="c-line-clamp1"><span>{{value.fengxiang}}</span> <span>{{value.fengli}}</span></p>
+                        <p class="c-line-clamp1"><span>{{value.fengxiang}}</span> <span>{{value.fengli.replace(/^\<!\[CDATA\[/g,'').replace(/\]\]\>/g,'')}}</span></p>
                     </div>
                     <div class="c-span3">
                         <p class="c-line-clamp1 dim"><span class="weather-icons icon-Sunset2"></span> 日出日落 </p>
@@ -50,10 +50,10 @@ export default {
         });
 
     },
-    watch: {  
+    watch: {
       'allWeatherInfo' () {
         this.index = 1;
-      }, 
+      },
       deep: true
     },
     methods: {
@@ -77,8 +77,8 @@ export default {
         // 天气预报详情组件滑动
        switchSwip() {
             return `translate3d(${-this.screenWidth * this.index}px, 0px, 0px)`;
-       } 
-    } 
+       }
+    }
 }
 </script>
 
@@ -110,7 +110,7 @@ export default {
                     padding-bottom: .1rem;
                 }
                 .border {
-                    border-right: 1px solid hsla(0, 0%, 100%, 0.2);  
+                    border-right: 1px solid hsla(0, 0%, 100%, 0.2);
                 }
                 .dim {
                     color: hsla(0,0%,100%,.5);
